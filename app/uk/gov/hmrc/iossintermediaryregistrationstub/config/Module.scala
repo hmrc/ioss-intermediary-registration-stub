@@ -17,11 +17,18 @@
 package uk.gov.hmrc.iossintermediaryregistrationstub.config
 
 import com.google.inject.AbstractModule
+import uk.gov.hmrc.iossintermediaryregistrationstub.controllers.actions.{AuthAction, AuthActionImpl, AuthenticatedControllerComponents, DefaultAuthenticatedControllerComponents}
+
+import java.time.{Clock, ZoneOffset}
 
 class Module extends AbstractModule {
 
   override def configure(): Unit = {
 
     bind(classOf[AppConfig]).asEagerSingleton()
+    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
+    bind(classOf[AuthAction]).to(classOf[AuthActionImpl]).asEagerSingleton()
+    bind(classOf[AuthenticatedControllerComponents]).to(classOf[DefaultAuthenticatedControllerComponents]).asEagerSingleton()
+
   }
 }
