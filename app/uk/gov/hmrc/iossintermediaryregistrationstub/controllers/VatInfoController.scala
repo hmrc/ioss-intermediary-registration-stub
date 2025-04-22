@@ -18,7 +18,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.{DesAddress, VatCustomerInfo}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.{DesAddress, IndividualName, VatCustomerInfo}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.LocalDate
@@ -37,8 +37,35 @@ class VatInfoController @Inject()(cc: ControllerComponents) extends BackendContr
     )
   }
 
+  private val successfulFullIndividualResponse = {
+    VatCustomerInfo(
+      registrationDate = Some(LocalDate.of(2020, 1, 1)),
+      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("AA11 1AA"), "GB"),
+      partyType = None,
+      organisationName = None,
+      individual = Some(IndividualName(Some("first"), Some("middle"), Some("last"))),
+      singleMarketIndicator = true
+    )
+  }
+
+  private val successfulSparseResponse = {
+    VatCustomerInfo(
+      registrationDate = None,
+      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("AA11 1AA"), "GB"),
+      partyType = None,
+      organisationName = Some("Company Name"),
+      individual = None,
+      singleMarketIndicator = true
+    )
+  }
+
   def getInformation(vrn: String): Action[AnyContent] = Action {
-    vrn.head match {
+    vrn match {
+      case "900000001" => NotFound
+      case "800000001" => InternalServerError
+      case "700000001" => Ok(Json.toJson(successfulSparseResponse))
+      case "700000002" => Ok(Json.toJson(successfulFullIndividualResponse))
+      case "700000003" => Ok(Json.toJson(successfulFullIndividualResponse.copy(partyType = Some("Z2"))))
       case _ => Ok(Json.toJson(successfulFullResponse))
     }
   }
