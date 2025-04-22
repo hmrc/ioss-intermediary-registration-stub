@@ -65,7 +65,6 @@ class VatInfoController @Inject()(cc: ControllerComponents) extends BackendContr
       case "800000001" => InternalServerError
       case "700000001" => Ok(Json.toJson(successfulSparseResponse))
       case "700000002" => Ok(Json.toJson(successfulFullIndividualResponse))
-      case "700000003" => Ok(Json.toJson(successfulFullIndividualResponse.copy(partyType = Some("Z2"))))
       case _ => Ok(Json.toJson(successfulFullResponse))
     }
   }
