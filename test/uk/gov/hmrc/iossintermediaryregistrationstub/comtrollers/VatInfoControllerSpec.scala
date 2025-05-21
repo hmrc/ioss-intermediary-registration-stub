@@ -46,7 +46,8 @@ class VatInfoControllerSpec extends SpecBase {
             partyType = None,
             organisationName = Some("Company Name"),
             individual = None,
-            singleMarketIndicator = true
+            singleMarketIndicator = true,
+            deregistrationDecisionDate = None
           )
 
         status(result) `mustBe` OK
