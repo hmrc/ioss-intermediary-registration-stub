@@ -21,41 +21,68 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{DesAddress, IndividualName, VatCustomerInfo}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.LocalDate
+import java.time.{Clock, LocalDate}
 import javax.inject.Inject
 
-class VatInfoController @Inject()(cc: ControllerComponents) extends BackendController(cc) {
+class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extends BackendController(cc) {
 
   private val successfulFullResponse = {
+    VatCustomerInfo(
+      registrationDate = Some(LocalDate.of(2020, 1, 1)),
+      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
+      partyType = None,
+      organisationName = Some("Company Name"),
+      individual = None,
+      singleMarketIndicator = true,
+      deregistrationDecisionDate = None
+    )
+  }
+
+  private val successfulFullResponseNonNi = {
     VatCustomerInfo(
       registrationDate = Some(LocalDate.of(2020, 1, 1)),
       desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("AA11 1AA"), "GB"),
       partyType = None,
       organisationName = Some("Company Name"),
       individual = None,
-      singleMarketIndicator = true
+      singleMarketIndicator = true,
+      deregistrationDecisionDate = None
+    )
+  }
+
+  private val expiredVrnResponse = {
+    VatCustomerInfo(
+      registrationDate = Some(LocalDate.of(2020, 1, 1)),
+      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
+      partyType = None,
+      organisationName = Some("Company Name"),
+      individual = None,
+      singleMarketIndicator = true,
+      deregistrationDecisionDate = Some(LocalDate.now(clock))
     )
   }
 
   private val successfulFullIndividualResponse = {
     VatCustomerInfo(
       registrationDate = Some(LocalDate.of(2020, 1, 1)),
-      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("AA11 1AA"), "GB"),
+      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
       partyType = None,
       organisationName = None,
       individual = Some(IndividualName(Some("first"), Some("middle"), Some("last"))),
-      singleMarketIndicator = true
+      singleMarketIndicator = true,
+      deregistrationDecisionDate = None
     )
   }
 
   private val successfulSparseResponse = {
     VatCustomerInfo(
       registrationDate = None,
-      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("AA11 1AA"), "GB"),
+      desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
       partyType = None,
       organisationName = Some("Company Name"),
       individual = None,
-      singleMarketIndicator = true
+      singleMarketIndicator = true,
+      deregistrationDecisionDate = None
     )
   }
 
@@ -65,6 +92,8 @@ class VatInfoController @Inject()(cc: ControllerComponents) extends BackendContr
       case "800000001" => InternalServerError
       case "700000001" => Ok(Json.toJson(successfulSparseResponse))
       case "700000002" => Ok(Json.toJson(successfulFullIndividualResponse))
+      case "700000003" => Ok(Json.toJson(successfulFullResponseNonNi))
+      case "700000004" => Ok(Json.toJson(expiredVrnResponse))
       case _ => Ok(Json.toJson(successfulFullResponse))
     }
   }
