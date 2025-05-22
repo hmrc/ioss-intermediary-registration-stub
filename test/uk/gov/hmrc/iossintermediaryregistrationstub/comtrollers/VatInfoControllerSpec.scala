@@ -42,11 +42,12 @@ class VatInfoControllerSpec extends SpecBase {
         val successfulResponse =
           VatCustomerInfo(
             registrationDate = Some(LocalDate.of(2020, 1, 1)),
-            desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("AA11 1AA"), "GB"),
+            desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
             partyType = None,
             organisationName = Some("Company Name"),
             individual = None,
-            singleMarketIndicator = true
+            singleMarketIndicator = true,
+            deregistrationDecisionDate = None
           )
 
         status(result) `mustBe` OK

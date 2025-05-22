@@ -27,7 +27,8 @@ case class VatCustomerInfo(
                             partyType: Option[String],
                             organisationName: Option[String],
                             individual: Option[IndividualName],
-                            singleMarketIndicator: Boolean
+                            singleMarketIndicator: Boolean,
+                            deregistrationDecisionDate: Option[LocalDate]
                           )
 
 object VatCustomerInfo {
@@ -39,7 +40,8 @@ object VatCustomerInfo {
         (__ \ "approvedInformation" \ "customerDetails" \ "partyType").readNullable[String] and
         (__ \ "approvedInformation" \ "customerDetails" \ "organisationName").readNullable[String] and
         (__ \ "approvedInformation" \ "customerDetails" \ "individual").readNullable[IndividualName] and
-        (__ \ "approvedInformation" \ "customerDetails" \ "singleMarketIndicator").read[Boolean]
+        (__ \ "approvedInformation" \ "customerDetails" \ "singleMarketIndicator").read[Boolean] and
+        (__ \ "approvedInformation" \ "deregistration" \ "effectDateOfCancellation").readNullable[LocalDate]
       )(VatCustomerInfo.apply)
 
   implicit val writes: OWrites[VatCustomerInfo] =
@@ -49,7 +51,8 @@ object VatCustomerInfo {
         (__ \ "approvedInformation" \ "customerDetails" \ "partyType").writeNullable[String] and
         (__ \ "approvedInformation" \ "customerDetails" \ "organisationName").writeNullable[String] and
         (__ \ "approvedInformation" \ "customerDetails" \ "individual").writeNullable[IndividualName] and
-        (__ \ "approvedInformation" \ "customerDetails" \ "singleMarketIndicator").write[Boolean]
+        (__ \ "approvedInformation" \ "customerDetails" \ "singleMarketIndicator").write[Boolean] and
+        (__ \ "approvedInformation" \ "deregistration" \ "effectDateOfCancellation").writeNullable[LocalDate]
       )(vatCustomerInfo => Tuple.fromProductTyped(vatCustomerInfo))
 }
 
