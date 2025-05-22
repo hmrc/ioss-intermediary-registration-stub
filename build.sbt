@@ -11,6 +11,5 @@ lazy val microservice = Project("ioss-intermediary-registration-stub", file(".")
     // suppress warnings in generated routes files
     scalacOptions += "-Wconf:src=routes/.*:s",
   )
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(PlayKeys.playDefaultPort := 10186)
