@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 
 import play.api.Logging
@@ -13,7 +29,7 @@ import javax.inject.Inject
 import scala.concurrent.Future
 
 object MatchInfractionIds {
-  val activeSearchId = "333333333"
+  val activeSearchId = "IN333333333"
   val quarantinedSearchId = "333333334"
   val transferingMsidId = "IM0123123187"
 }
@@ -48,16 +64,17 @@ class CoreRegistrationValidationController @Inject()(
 
   def coreValidateRegistration: Action[AnyContent] = Action.async {
     implicit request =>
-
       val jsonBody: Option[JsValue] = request.body.asJson
       jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
-        jsonSchemaHelper.applySchemaValidation("/resources/schemas/core-registration-schema.json", jsonBody) match {
+        jsonSchemaHelper.applySchemaValidation("/resources/schema/core-registration-schema.json", jsonBody) match {
           case SuccessSchema =>
+            println("This was a success")
 
             //{"source":"VATNumber","searchId":"100000001","searchIdIssuedBy":"GB"}
             val searchId = jsonBody.map(body => (body \ "searchId").as[String]).get
             val searchIdIssuedBy = jsonBody.map(body => (body \ "searchIdIssuedBy").as[String]).get
-
+            println(searchId)
+            println(searchIdIssuedBy)
             val findMatch = (searchIdIssuedBy, searchId) match {
               case (_, MatchInfractionIds.activeSearchId) =>
                 logger.info("Match found. Active in another MS. GG VRN kickout")

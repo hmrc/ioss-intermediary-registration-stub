@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.iossintermediaryregistrationstub.models.core
+package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
-import play.api.libs.json.{Json, OFormat}
+case class CoreRegistrationSchemaData() {
+  def schemaPath = "/resources/schema/core-registration-schema.json"
 
-case class CoreRegistrationRequest(source: String,
-                                   scheme: Option[String],
-                                   searchId: String,
-                                   searchIntermediary: Option[String],
-                                   searchIdIssuedBy: String)
-
-object CoreRegistrationRequest {
-  implicit val format: OFormat[CoreRegistrationRequest] = Json.format[CoreRegistrationRequest]
+  def givenExample =
+    """{
+    "source": "EUTraderId",
+    "scheme": "IOSS",
+    "searchId": "IM2344433220",
+    "searchIntermediary": "IN4747493822",
+    "searchIdIssuedBy": "FR"
+  }""".stripMargin
 }

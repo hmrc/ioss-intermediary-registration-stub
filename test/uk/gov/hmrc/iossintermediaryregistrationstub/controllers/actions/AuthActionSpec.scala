@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.iossintermediaryregistrationstub.comtrollers.actions
+package uk.gov.hmrc.iossintermediaryregistrationstub.controllers.actions
 
 import com.google.inject.Inject
 import org.mockito.ArgumentMatchers.any

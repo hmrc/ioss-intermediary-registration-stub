@@ -1,6 +1,17 @@
 /*
  * Copyright 2023 HM Revenue & Customs
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.gov.hmrc.iossintermediaryregistrationstub.utils
@@ -57,7 +68,9 @@ class JsonSchemaHelper @Inject()() extends Logging {
               FailedSchema
             case None => NoJsBodyProvided
         }
-      case Failure(_) => FailedToFindSchema
+      case Failure(_) =>
+        println("Failed to find schema")
+        FailedToFindSchema
     }
   }
 
@@ -67,7 +80,7 @@ class JsonSchemaHelper @Inject()() extends Logging {
   }
 
   def applySchemaHeaderValidation(headers: Headers)(f: => Future[Result]): Future[Result] = {
-
+    println("This is the trigger?")
     RegistrationHeaderHelper.validateHeaders(headers.headers) match {
       case Right(_) => f
       case Left(MissingHeader(header)) => Future.successful(BadRequest(Json.toJson(EisErrorResponse(Instant.now(), "OSS_001", s"Bad Request - missing $header"))))
