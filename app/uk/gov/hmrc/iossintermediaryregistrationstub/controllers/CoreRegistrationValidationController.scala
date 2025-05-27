@@ -106,7 +106,7 @@ class CoreRegistrationValidationController @Inject()(
               case ("LT", "ABC123123") =>
                 logger.info("Match found. Quarantined in another MS. EU details (Tax ID number)")
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = SourceType.EUTraderId.toString))
-              case (_,  MatchInfractionIds.transferingMsidId) =>
+              case (_, MatchInfractionIds.transferingMsidId) =>
                 logger.info("Match found. Transferring from another MSID. Previous reg IOSS")
                 Seq(genericMatch.copy(matchType = MatchType.TransferringMSID, traderId = SourceType.TraderId.toString, exclusionEffectiveDate = Some(LocalDate.of(2024, 1, 15).format(dateFormatter))))
               case _ =>

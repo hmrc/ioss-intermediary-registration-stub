@@ -26,7 +26,6 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.Headers.{invalidHeaders, missingHeaders, validHeaders}
 
-
 import java.time.Clock
 
 class CoreRegistrationValidationControllerSpec extends SpecBase {

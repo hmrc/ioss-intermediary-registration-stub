@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.github.fge.jsonschema.core.report.ProcessingReport
 import com.github.fge.jsonschema.main.{JsonSchema, JsonSchemaFactory}
 import play.api.Logging
-import play.api.libs.json.{Json, JsValue}
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Results.BadRequest
 import play.api.mvc.{Headers, Result}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.EisErrorResponse
@@ -59,14 +59,14 @@ class JsonSchemaHelper @Inject()() extends Logging {
       case Success(schema) =>
         val validationResult = validRequest(schema, jsonBody)
         validationResult match {
-            case Some(res) if(res.isSuccess) => SuccessSchema
-            case Some(res) =>
-              logger.error(s"Failed json schema ${res.getExceptionThreshold}")
-              res.forEach { test =>
-                logger.error(test.getMessage)
-              }
-              FailedSchema
-            case None => NoJsBodyProvided
+          case Some(res) if (res.isSuccess) => SuccessSchema
+          case Some(res) =>
+            logger.error(s"Failed json schema ${res.getExceptionThreshold}")
+            res.forEach { test =>
+              logger.error(test.getMessage)
+            }
+            FailedSchema
+          case None => NoJsBodyProvided
         }
       case Failure(_) =>
         println("Failed to find schema")
@@ -93,7 +93,11 @@ class JsonSchemaHelper @Inject()() extends Logging {
 }
 
 sealed trait SchemaValidationResult
+
 case object SuccessSchema extends SchemaValidationResult
+
 case object FailedSchema extends SchemaValidationResult
+
 case object FailedToFindSchema extends SchemaValidationResult
+
 case object NoJsBodyProvided extends SchemaValidationResult
