@@ -69,7 +69,6 @@ class JsonSchemaHelper @Inject()() extends Logging {
           case None => NoJsBodyProvided
         }
       case Failure(_) =>
-        println("Failed to find schema")
         FailedToFindSchema
     }
   }
@@ -80,7 +79,6 @@ class JsonSchemaHelper @Inject()() extends Logging {
   }
 
   def applySchemaHeaderValidation(headers: Headers)(f: => Future[Result]): Future[Result] = {
-    println("This is the trigger?")
     RegistrationHeaderHelper.validateHeaders(headers.headers) match {
       case Right(_) => f
       case Left(MissingHeader(header)) => Future.successful(BadRequest(Json.toJson(EisErrorResponse(Instant.now(), "OSS_001", s"Bad Request - missing $header"))))

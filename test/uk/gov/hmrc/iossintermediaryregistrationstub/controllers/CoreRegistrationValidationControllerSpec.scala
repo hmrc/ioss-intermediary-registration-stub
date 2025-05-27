@@ -72,8 +72,7 @@ class CoreRegistrationValidationControllerSpec extends SpecBase {
             .withHeaders(validFakeHeaders)
 
           val result = route(app, request).value
-
-          println(contentAsJson(result))
+          
           status(result) mustEqual 200
 
           contentAsJson(result) mustEqual Json.toJson(coreValidationResponses.copy(

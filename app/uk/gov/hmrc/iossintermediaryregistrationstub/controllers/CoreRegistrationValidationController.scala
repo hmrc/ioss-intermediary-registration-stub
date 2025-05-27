@@ -68,13 +68,11 @@ class CoreRegistrationValidationController @Inject()(
       jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
         jsonSchemaHelper.applySchemaValidation("/resources/schemas/core-registration-schema.json", jsonBody) match {
           case SuccessSchema =>
-            println("This was a success")
 
             //{"source":"VATNumber","searchId":"100000001","searchIdIssuedBy":"GB"}
             val searchId = jsonBody.map(body => (body \ "searchId").as[String]).get
             val searchIdIssuedBy = jsonBody.map(body => (body \ "searchIdIssuedBy").as[String]).get
-            println(searchId)
-            println(searchIdIssuedBy)
+
             val findMatch = (searchIdIssuedBy, searchId) match {
               case (_, MatchInfractionIds.activeSearchId) =>
                 logger.info("Match found. Active in another MS. GG VRN kickout")
