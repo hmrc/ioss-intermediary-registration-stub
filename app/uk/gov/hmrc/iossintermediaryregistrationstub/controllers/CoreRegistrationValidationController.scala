@@ -66,7 +66,7 @@ class CoreRegistrationValidationController @Inject()(
     implicit request =>
       val jsonBody: Option[JsValue] = request.body.asJson
       jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
-        jsonSchemaHelper.applySchemaValidation("/resources/schema/core-registration-schema.json", jsonBody) match {
+        jsonSchemaHelper.applySchemaValidation("/resources/schemas/core-registration-schema.json", jsonBody) match {
           case SuccessSchema =>
             println("This was a success")
 

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
 case class CoreRegistrationSchemaData() {
-  def schemaPath = "/resources/schema/core-registration-schema.json"
+  def schemaPath = "/resources/schemas/core-registration-schema.json"
 
   def givenExample =
     """{

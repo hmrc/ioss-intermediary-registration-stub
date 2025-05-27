@@ -18,7 +18,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
 case class EtmpRegistrationSchemaData() {
 
-  def schemaPath = "/resources/schema/etmp-registration-schema.json"
+  def schemaPath = "/resources/schemas/etmp-registration-schema.json"
 
   def givenOptionalExample: String =
     """{
