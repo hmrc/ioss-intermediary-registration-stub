@@ -24,7 +24,7 @@ object Format {
   val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     .withLocale(Locale.UK)
     .withZone(ZoneId.of("GMT"))
-\
+
   val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z")
     .withLocale(Locale.UK)
     .withZone(ZoneId.of("GMT"))
