@@ -29,7 +29,7 @@ import javax.inject.Inject
 import scala.concurrent.Future
 
 object MatchInfractionIds {
-  val activeSearchId = "IN333333333"
+  val activeSearchId = "333333333"
   val quarantinedSearchId = "333333334"
   val transferingMsidId = "IM0123123187"
 }
@@ -76,7 +76,7 @@ class CoreRegistrationValidationController @Inject()(
             val findMatch = (searchIdIssuedBy, searchId) match {
               case (_, MatchInfractionIds.activeSearchId) =>
                 logger.info("Match found. Active in another MS. GG VRN kickout")
-                Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPActiveNETP, traderId = SourceType.VATNumber.toString))
+                Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPActiveNETP, traderId = "IN2467777777"))
               case (_, MatchInfractionIds.`quarantinedSearchId`) =>
                 logger.info("Match found. Quarantined in another MS. GG VRN kickout")
                 Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPQuarantinedNETP, traderId = SourceType.VATNumber.toString))
