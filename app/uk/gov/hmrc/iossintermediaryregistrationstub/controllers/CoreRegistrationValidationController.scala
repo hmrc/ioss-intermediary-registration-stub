@@ -46,8 +46,8 @@ class CoreRegistrationValidationController @Inject()(
     traderId = "333333331",
     memberState = "EE",
     exclusionStatusCode = None,
-    exclusionDecisionDate = Some("2022-12-11"),
-    exclusionEffectiveDate = Some("2023-01-01"),
+    exclusionDecisionDate = Some(LocalDate.now().withMonth(1).withDayOfMonth(1).toString),
+    exclusionEffectiveDate = Some(LocalDate.now().withMonth(1).withDayOfMonth(1).toString),
     nonCompliantReturns = None,
     nonCompliantPayments = None
   )
@@ -79,31 +79,25 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPActiveNETP, traderId = "IN2467777777"))
               case (_, MatchInfractionIds.`quarantinedSearchId`) =>
                 logger.info("Match found. Quarantined in another MS. GG VRN kickout")
-                Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPQuarantinedNETP, traderId = SourceType.VATNumber.toString))
-              case ("SI", "11223344") =>
+                Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPQuarantinedNETP, traderId = "IN2467777777"))
+              case ("SI", "IN7057777123") =>
                 logger.info("Match found. Active in another MS. Previous reg Union (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.TraderIdActiveNETP, traderId = SourceType.EUTraderId.toString))
-              case ("SI", "IM7051122334") => // Slovenia
-                logger.info("Match found. Active in another MS. Previous reg IOSS")
-                Seq(genericMatch.copy(matchType = MatchType.TraderIdActiveNETP, traderId = SourceType.TraderId.toString, memberState = searchIdIssuedBy))
-              case ("LV", "11111222222") =>
+                Seq(genericMatch.copy(matchType = MatchType.TraderIdActiveNETP, traderId = "IN7057777777"))
+              case ("LV", "IN4287777123") =>
                 logger.info("Match found. Quarantined in another MS. Previous reg Union (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.TraderIdQuarantinedNETP, traderId = SourceType.EUTraderId.toString))
-              case ("LV", "IM4281122334") => // Latvia
-                logger.info("Match found. Quarantined in another MS. Previous reg IOSS")
-                Seq(genericMatch.copy(matchType = MatchType.TraderIdQuarantinedNETP, traderId = SourceType.TraderId.toString))
+                Seq(genericMatch.copy(matchType = MatchType.TraderIdQuarantinedNETP, traderId = "IN4287777123"))
               case ("PT", "111222333") =>
                 logger.info("Match found. Active in another MS. EU details (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = SourceType.EUTraderId.toString))
+                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "IN4287777123"))
               case ("PT", "123LIS123") =>
                 logger.info("Match found. Active in another MS. EU details (Tax ID number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = SourceType.EUTraderId.toString))
+                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "IN4287777123"))
               case ("LT", "999888777") =>
                 logger.info("Match found. Quarantined in another MS. EU details (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = SourceType.EUTraderId.toString))
+                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "IN4287777123"))
               case ("LT", "ABC123123") =>
                 logger.info("Match found. Quarantined in another MS. EU details (Tax ID number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = SourceType.EUTraderId.toString))
+                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "IN4287777123"))
               case (_, MatchInfractionIds.transferingMsidId) =>
                 logger.info("Match found. Transferring from another MSID. Previous reg IOSS")
                 Seq(genericMatch.copy(matchType = MatchType.TransferringMSID, traderId = SourceType.TraderId.toString, exclusionEffectiveDate = Some(LocalDate.of(2024, 1, 15).format(dateFormatter))))
