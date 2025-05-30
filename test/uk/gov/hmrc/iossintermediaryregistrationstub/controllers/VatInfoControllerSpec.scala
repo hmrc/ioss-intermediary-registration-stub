@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.iossintermediaryregistrationstub.comtrollers
+package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.JsSuccess

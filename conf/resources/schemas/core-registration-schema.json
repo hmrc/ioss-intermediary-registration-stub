@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Trader Validation Request",
+  "javaType": "IossEUValidationRequest",
+  "description": "Request for EU Trader Information for NI validation v0.01",
+  "type": "object",
+  "properties": {
+    "source": {
+      "description": "The type of field being checked",
+      "type": "string",
+      "enum": [
+        "VATNumber",
+        "EUTraderId",
+        "TraderId"
+      ]
+    },
+    "scheme": {
+      "description": "Previous registrations only",
+      "type": "string",
+      "enum": [
+        "OSS",
+        "IOSS"
+      ]
+    },
+    "searchId": {
+      "description": "Tax reference being search for.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "searchIntermediary": {
+      "description": "Optional Intermediary if IOSS number is supplied in searchId, Ignored if any other tax reference tyype is entered in searchId.",
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 12,
+      "pattern": "^IN[0-9]{10}$"
+    },
+    "searchIdIssuedBy": {
+      "description": "Country of issue of the searchId.",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2
+    }
+  },
+  "required": [
+    "source",
+    "searchId",
+    "searchIdIssuedBy"
+  ],
+  "additionalProperties": false
+}
