@@ -26,7 +26,7 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.Headers.{invalidHeaders, missingHeaders, validHeaders}
 
-import java.time.Clock
+import java.time.{Clock, LocalDate}
 
 class CoreRegistrationValidationControllerSpec extends SpecBase {
 
@@ -36,18 +36,18 @@ class CoreRegistrationValidationControllerSpec extends SpecBase {
 
   private val genericMatch = Match(
     MatchType.TraderIdQuarantinedNETP,
-    "IN333333331",
+    "333333331",
     "EE",
     None,
-    Some("2022-12-11"),
-    Some("2023-01-01"),
+    exclusionDecisionDate = Some(LocalDate.now().withMonth(1).withDayOfMonth(1).toString),
+    exclusionEffectiveDate = Some(LocalDate.now().withMonth(1).withDayOfMonth(1).toString),
     None,
     None
   )
 
   private val coreValidationResponses: CoreRegistrationValidationResult =
     CoreRegistrationValidationResult(
-      "IN333333331",
+      "333333331",
       None,
       "EE",
       traderFound = true,
@@ -68,7 +68,7 @@ class CoreRegistrationValidationControllerSpec extends SpecBase {
         running(app) {
           val request = FakeRequest(POST, routes.CoreRegistrationValidationController.coreValidateRegistration().url)
             .withJsonBody(Json.toJson(coreRegistrationRequest.copy(
-              source = SourceType.VATNumber.toString, searchId = "IN333333333")))
+              source = SourceType.VATNumber.toString, searchId = "333333333")))
             .withHeaders(validFakeHeaders)
 
           val result = route(app, request).value
@@ -76,9 +76,9 @@ class CoreRegistrationValidationControllerSpec extends SpecBase {
           status(result) mustEqual 200
 
           contentAsJson(result) mustEqual Json.toJson(coreValidationResponses.copy(
-            searchId = "IN333333333", matches = Seq(
+            searchId = "333333333", matches = Seq(
               genericMatch.copy(matchType = MatchType.OtherMSNETPActiveNETP,
-                traderId = SourceType.VATNumber.toString
+                traderId = "IN2467777777"
               ))))
         }
       }
