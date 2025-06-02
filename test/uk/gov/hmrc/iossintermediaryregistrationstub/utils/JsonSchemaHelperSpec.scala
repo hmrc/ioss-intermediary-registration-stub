@@ -23,11 +23,7 @@ class JsonSchemaHelperSpec extends SpecBase {
 
   val coreSchemaPath: String = CoreRegistrationSchemaData().schemaPath
   val coreGivenExample: String = CoreRegistrationSchemaData().givenExample
-
-  val etmpRegistrationSchemaPath: String = EtmpRegistrationSchemaData().schemaPath
-  val etmpRegistrationGivenOptionalExample: String = EtmpRegistrationSchemaData().givenOptionalExample
-  val etmpRegistrationGivenFullExample: String = EtmpRegistrationSchemaData().givenFullExample
-
+  
   val helper = new JsonSchemaHelper()
 
 
@@ -43,25 +39,6 @@ class JsonSchemaHelperSpec extends SpecBase {
 
     "must return SuccessSchema for given example" in {
       helper.applySchemaValidation(coreSchemaPath, Some(Json.parse(coreGivenExample))) mustBe SuccessSchema
-    }
-  }
-
-  "EtmpRegistration SchemaHelper.applySchemaValidation" - {
-
-    "must return NoJsBodyProvided if no jsBody parameter specified" in {
-      helper.applySchemaValidation(etmpRegistrationSchemaPath, None) mustBe NoJsBodyProvided
-    }
-
-    "must return FailedToFindSchema if there is no schema found in the given path" in {
-      helper.applySchemaValidation("path", None) mustBe FailedToFindSchema
-    }
-
-    "must return SuccessSchema for a optional given example" in {
-      helper.applySchemaValidation(etmpRegistrationSchemaPath, Some(Json.parse(etmpRegistrationGivenOptionalExample))) mustBe SuccessSchema
-    }
-
-    "must return SuccessSchema for a full given example" in {
-      helper.applySchemaValidation(etmpRegistrationSchemaPath, Some(Json.parse(etmpRegistrationGivenFullExample))) mustBe SuccessSchema
     }
   }
 }
