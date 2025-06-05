@@ -20,6 +20,7 @@ import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.CoreRegistrationRequest
 
 import java.time.{Clock, LocalDate, ZoneId}
 
@@ -31,4 +32,12 @@ class SpecBase extends AnyFreeSpec
   val stubClock: Clock = Clock.fixed(LocalDate.now.atStartOfDay(ZoneId.systemDefault).toInstant, ZoneId.systemDefault)
 
   val vrn = "100000001"
+
+  val coreRegistrationRequest: CoreRegistrationRequest = CoreRegistrationRequest(
+    "VATNumber",
+    Some("IOSS"),
+    "333333331",
+    Some("IN4747493822"),
+    "PR"
+  )
 }
