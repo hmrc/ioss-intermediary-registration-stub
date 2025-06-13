@@ -31,7 +31,7 @@ class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extend
       registrationDate = Some(LocalDate.of(2020, 1, 1)),
       desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
       partyType = None,
-      organisationName = Some("Company Name"),
+      organisationName = Some("Intermediary Company Name"),
       individual = None,
       singleMarketIndicator = true,
       deregistrationDecisionDate = None
@@ -43,7 +43,7 @@ class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extend
       registrationDate = Some(LocalDate.of(2020, 1, 1)),
       desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("AA11 1AA"), "GB"),
       partyType = None,
-      organisationName = Some("Company Name"),
+      organisationName = Some("Intermediary Company Name"),
       individual = None,
       singleMarketIndicator = true,
       deregistrationDecisionDate = None
@@ -55,7 +55,7 @@ class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extend
       registrationDate = Some(LocalDate.of(2020, 1, 1)),
       desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
       partyType = None,
-      organisationName = Some("Company Name"),
+      organisationName = Some("Intermediary Company Name"),
       individual = None,
       singleMarketIndicator = true,
       deregistrationDecisionDate = Some(LocalDate.now(clock))
@@ -79,7 +79,7 @@ class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extend
       registrationDate = None,
       desAddress = DesAddress("1 The Street", Some("Some Town"), None, None, None, Some("BT11 1AA"), "GB"),
       partyType = None,
-      organisationName = Some("Company Name"),
+      organisationName = Some("Intermediary Company Name"),
       individual = None,
       singleMarketIndicator = true,
       deregistrationDecisionDate = None
