@@ -1,5 +1,7 @@
 # microservice specific routes
 
-GET         /vat/customer/vrn/:vrn/information                                               uk.gov.hmrc.iossintermediaryregistrationstub.controllers.VatInfoController.getInformation(vrn: String)
+GET         /vat/customer/vrn/:vrn/information                uk.gov.hmrc.iossintermediaryregistrationstub.controllers.VatInfoController.getInformation(vrn: String)
 
-POST        /vec/iossregistration/iossregvalidation/v1                                       uk.gov.hmrc.iossintermediaryregistrationstub.controllers.CoreRegistrationValidationController.coreValidateRegistration()
+POST        /vec/iossregistration/iossregvalidation/v1        uk.gov.hmrc.iossintermediaryregistrationstub.controllers.CoreRegistrationValidationController.coreValidateRegistration()
+
+POST        /vec/iosssubscription/subdatatransfer/v1          uk.gov.hmrc.iossintermediaryregistrationstub.controllers.RegistrationController.createRegistration()
