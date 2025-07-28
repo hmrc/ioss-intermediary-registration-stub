@@ -1,5 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.6",
+  "title": "IOSS-Subscription Create Request",
   "type": "object",
   "properties": {
     "administration": {
@@ -52,6 +54,11 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 50
+        },
+        "iossIntermediaryID": {
+          "maxLength": 50,
+          "minLength": 1,
+          "type": "string"
         }
       },
       "required": [
@@ -123,12 +130,12 @@
           "minLength": 1,
           "maxLength": 40
         },
-        "AddressLine1": {
+        "addressLine1": {
           "type": "string",
           "minLength": 1,
           "maxLength": 40
         },
-        "AddressLine2": {
+        "addressLine2": {
           "type": "string",
           "minLength": 1,
           "maxLength": 40
@@ -150,7 +157,7 @@
         }
       },
       "required": [
-        "AddressLine1",
+        "addressLine1",
         "issuedBy",
         "townOrCity"
       ],
