@@ -33,6 +33,8 @@ class RegistrationConnector @Inject()(
 
     val enrolmentResponse = TaxEnrolmentResponse("SUCCEEDED")
 
+    println(s"Url is ${callbackUrl}")
+
     httpClient.post(url"$callbackUrl").withBody(Json.toJson(enrolmentResponse)).execute[HttpResponse]
   }
 }

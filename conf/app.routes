@@ -5,3 +5,5 @@ GET         /vat/customer/vrn/:vrn/information                uk.gov.hmrc.iossin
 POST        /vec/iossregistration/iossregvalidation/v1        uk.gov.hmrc.iossintermediaryregistrationstub.controllers.CoreRegistrationValidationController.coreValidateRegistration()
 
 POST        /vec/iosssubscription/subdatatransfer/v1          uk.gov.hmrc.iossintermediaryregistrationstub.controllers.RegistrationController.createRegistration()
+
+PUT         /subscriptions/:subscriptionId/subscriber         uk.gov.hmrc.iossintermediaryregistrationstub.controllers.EnrolmentsController.confirm(subscriptionId: String)
