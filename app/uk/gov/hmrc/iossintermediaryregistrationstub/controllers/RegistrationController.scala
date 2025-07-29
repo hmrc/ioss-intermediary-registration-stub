@@ -59,7 +59,6 @@ class RegistrationController @Inject()(
                       logger.info("Successfully created a registration")
                       val randomNumber = randomService.randomInt(100000)
                       val random7Digit = randomService.randomInt(minValue = 1111111, maxValue = 9999999)
-                      println(s"Random 7 digit number was ${random7Digit}")
                       Future.successful(Created(Json.toJson(EtmpEnrolmentResponse(LocalDateTime.now(clock), Some(s"$idValue-id-$randomNumber"), idValue, s"IN900${random7Digit}", "A Business Partner"))))
                   }
                 case JsError(errors) =>
