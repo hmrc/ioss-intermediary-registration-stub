@@ -74,10 +74,7 @@ class SpecBase extends AnyFreeSpec
           intermediaryNumber = Some("IM123456789")
         )
       ),
-      websites = Seq(
-        EtmpWebsite(websiteAddress = "www.example-one.co.uk"),
-        EtmpWebsite(websiteAddress = "www.example-two.co.uk")
-      ),
+      websites = None,
       contactName = "Mr Test",
       businessTelephoneNumber = "0123 456789",
       businessEmailId = "mrtest@example.co.uk",

@@ -45,6 +45,8 @@ class RegistrationController @Inject()(
 
       val maybeJsonBody: Option[JsValue] = request.body.asJson
 
+      logger.info(s"Payload received on create registration $maybeJsonBody")
+
       jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
         jsonSchemaHelper.applySchemaValidation("/resources/schemas/etmp-registration-schema.json", maybeJsonBody) match {
           case SuccessSchema =>

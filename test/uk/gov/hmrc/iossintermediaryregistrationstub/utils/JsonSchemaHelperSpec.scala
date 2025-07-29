@@ -23,6 +23,30 @@ class JsonSchemaHelperSpec extends SpecBase {
 
   val coreSchemaPath: String = CoreRegistrationSchemaData().schemaPath
   val coreGivenExample: String = CoreRegistrationSchemaData().givenExample
+  val example2: String = """{
+                           |  "administration": {
+                           |    "messageType": "IOSSIntCreate",
+                           |    "regimeID": "IOSS"
+                           |  },
+                           |  "customerIdentification": {
+                           |    "idType": "VRN",
+                           |    "idValue": "100000001"
+                           |  },
+                           |  "tradingNames": [],
+                           |  "schemeDetails": {
+                           |    "commencementDate": "2025-07-29",
+                           |    "euRegistrationDetails": [],
+                           |    "previousEURegistrationDetails": [],
+                           |    "websites": [],
+                           |    "contactName": "a",
+                           |    "businessTelephoneNumber": "123",
+                           |    "businessEmailId": "a@a.com"
+                           |  },
+                           |  "bankDetails": {
+                           |    "accountName": "test",
+                           |    "iban": "GB33BUKB20201555555555"
+                           |  }
+                           |}""".stripMargin
   
   val helper = new JsonSchemaHelper()
 
@@ -39,6 +63,24 @@ class JsonSchemaHelperSpec extends SpecBase {
 
     "must return SuccessSchema for given example" in {
       helper.applySchemaValidation(coreSchemaPath, Some(Json.parse(coreGivenExample))) mustBe SuccessSchema
+    }
+  }
+
+  "EtmpCreateRegistration SchemaHelper.applySchemaValidation" - {
+
+    val etmpSchemaPath: String = EtmpCreateRegistrationSchemaData.schemaPath
+    val etmpGivenExample: String = EtmpCreateRegistrationSchemaData.givenExample
+
+    "must return NoJsBodyProvided if no jsBody parameter specified" in {
+      helper.applySchemaValidation(etmpSchemaPath, None) mustBe NoJsBodyProvided
+    }
+
+    "must return FailedToFindSchema if there is no schema found in the given path" in {
+      helper.applySchemaValidation("path", None) mustBe FailedToFindSchema
+    }
+
+    "must return SuccessSchema for given example" in {
+      helper.applySchemaValidation(etmpSchemaPath, Some(Json.parse(etmpGivenExample))) mustBe SuccessSchema
     }
   }
 }
