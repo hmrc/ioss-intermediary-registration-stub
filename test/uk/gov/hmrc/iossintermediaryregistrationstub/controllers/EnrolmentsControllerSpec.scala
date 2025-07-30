@@ -66,6 +66,36 @@ class EnrolmentsControllerSpec extends SpecBase {
       }
     }
 
+    "must return Unauthorized for subscription id 666000004-id" in {
+
+      val app = new GuiceApplicationBuilder().build()
+
+      running(app) {
+        val request = FakeRequest(PUT, routes.EnrolmentsController.confirm("666000004-id").url)
+          .withBody(Json.stringify(Json.toJson(SubscriberRequest("HMRC-IOSS-ORG", "/test", "123"))))
+          .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustEqual UNAUTHORIZED
+      }
+    }
+
+    "must return BadRequest for subscription id 666000003-id" in {
+
+      val app = new GuiceApplicationBuilder().build()
+
+      running(app) {
+        val request = FakeRequest(PUT, routes.EnrolmentsController.confirm("666000003-id").url)
+          .withBody(Json.stringify(Json.toJson(SubscriberRequest("HMRC-IOSS-ORG", "/test", "123"))))
+          .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustEqual BAD_REQUEST
+      }
+    }
+
     "must return BadRequest when headers missing" in {
 
       val app = new GuiceApplicationBuilder().build()

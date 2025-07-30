@@ -34,9 +34,15 @@ class EnrolmentsController @Inject()(
   def confirm(subscriptionId: String): Action[SubscriberRequest] = Action(parse.json[SubscriberRequest]) {
     implicit request =>
       if (request.headers.headers.exists(_._1.equalsIgnoreCase(AUTHORIZATION))) {
-        logger.info(s"Call back URL: ${request.body.callback}")
-        registrationConnector.doCallback(subscriptionId, request.body.callback)
-        NoContent
+        if (subscriptionId.startsWith("666000003-id")) {
+          BadRequest
+        } else if (subscriptionId.startsWith("666000004-id")) {
+          Unauthorized
+        } else {
+          logger.info(s"Call back URL: ${request.body.callback}")
+          registrationConnector.doCallback(subscriptionId, request.body.callback)
+          NoContent
+        }
       }
       else {
         BadRequest(Json.toJson(s"Bad Request - missing $AUTHORIZATION"))

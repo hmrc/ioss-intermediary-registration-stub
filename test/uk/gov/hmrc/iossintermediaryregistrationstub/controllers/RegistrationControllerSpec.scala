@@ -74,6 +74,99 @@ class RegistrationControllerSpec extends SpecBase {
       }
     }
 
+    "must return UnprocessableEntity and an error response with error code 007 when vrn is 666000000" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      val vrn = "666000000"
+
+      running(app) {
+
+        val request = FakeRequest(POST, routes.RegistrationController.createRegistration().url)
+          .withJsonBody(Json.toJson(registrationRequest.copy(customerIdentification = registrationRequest.customerIdentification.copy(idValue = vrn))))
+          .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustBe UNPROCESSABLE_ENTITY
+        contentAsJson(result) mustBe Json.toJson(EtmpEnrolmentErrorResponse(
+          errorDetail = EisErrorResponse(
+            timestamp = LocalDateTime.now(stubClock),
+            errorCode = "007",
+            errorMessage = "Business Partner already has an active OSS Subscription for this regime",
+          )))
+      }
+    }
+
+    "must return UnprocessableEntity and an error response with error code 123 when vrn is 666000001" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      val vrn = "666000001"
+
+      running(app) {
+
+        val request = FakeRequest(POST, routes.RegistrationController.createRegistration().url)
+          .withJsonBody(Json.toJson(registrationRequest.copy(customerIdentification = registrationRequest.customerIdentification.copy(idValue = vrn))))
+          .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustBe UNPROCESSABLE_ENTITY
+        contentAsJson(result) mustBe Json.toJson(EtmpEnrolmentErrorResponse(
+          errorDetail = EisErrorResponse(
+            timestamp = LocalDateTime.now(stubClock),
+            errorCode = "123",
+            errorMessage = "error",
+          )))
+      }
+    }
+
+    "must return Conflict when submission is already registered" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      val vrn = "222222223"
+
+      running(app) {
+
+        val request = FakeRequest(POST, routes.RegistrationController.createRegistration().url)
+          .withJsonBody(Json.toJson(registrationRequest.copy(customerIdentification = registrationRequest.customerIdentification.copy(idValue = vrn))))
+          .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustBe CONFLICT
+      }
+    }
+
+    "must return BadRequest when there's an error creating the enrolment" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      val vrn = "222222233"
+
+      running(app) {
+
+        val request = FakeRequest(POST, routes.RegistrationController.createRegistration().url)
+          .withJsonBody(Json.toJson(registrationRequest.copy(customerIdentification = registrationRequest.customerIdentification.copy(idValue = vrn))))
+          .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustBe BAD_REQUEST
+      }
+    }
+
+
     "must return Bad Request when a header is invalid" in {
       val app = new GuiceApplicationBuilder()
         .overrides(bind[Clock].toInstance(stubClock))

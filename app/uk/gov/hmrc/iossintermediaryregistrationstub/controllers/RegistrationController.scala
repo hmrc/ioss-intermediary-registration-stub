@@ -57,6 +57,22 @@ class RegistrationController @Inject()(
                 case JsSuccess(etmpRegistrationRequest, _) =>
                   val idValue = etmpRegistrationRequest.customerIdentification.idValue
                   idValue match {
+                    case "222222223" =>
+                      logger.info("Matched stubbed error - Registration already exists")
+                      Future.successful(Conflict)
+                    case "222222233" =>
+                      logger.info("Matched stubbed error - Error creating enrolment for registration")
+                      Future.successful(BadRequest)
+                    case "666000000" | "177550000" =>
+                      logger.info("Matched stubbed error - Error creating enrolment for registration")
+                      Future.successful(UnprocessableEntity(Json.toJson(EtmpEnrolmentErrorResponse(
+                        EisErrorResponse(LocalDateTime.now(clock), "007", "Business Partner already has an active OSS Subscription for this regime")
+                      ))))
+                    case "666000001" =>
+                      logger.info("Matched stubbed error - 123 - error")
+                      Future.successful(UnprocessableEntity(Json.toJson(EtmpEnrolmentErrorResponse(
+                        errorDetail = EisErrorResponse(LocalDateTime.now(clock), "123", "error")))
+                      ))
                     case _ =>
                       logger.info("Successfully created a registration")
                       val randomNumber = randomService.randomInt(100000)
