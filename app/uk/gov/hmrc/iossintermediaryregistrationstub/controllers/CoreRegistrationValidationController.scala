@@ -150,6 +150,9 @@ class CoreRegistrationValidationController @Inject()(
               case ("LT", "ABC123125") =>
                 logger.info("Ioss match found. Quarantined in another MS. EU details (Tax ID number)")
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "IM3333333333"))
+              case ("AT", "IN0401234567") =>
+                logger.info("Match found. TransferringMSID with Non Compliant details.")
+                Seq(genericMatch.copy(matchType = MatchType.TransferringMSID, traderId = "IN0401234567", nonCompliantReturns = Some(1), nonCompliantPayments = Some(1)))
               case _ =>
                 Seq.empty
             }
