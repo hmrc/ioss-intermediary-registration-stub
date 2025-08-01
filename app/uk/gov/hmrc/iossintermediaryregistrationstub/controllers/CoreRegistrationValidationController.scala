@@ -152,7 +152,10 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "IM3333333333"))
               case ("AT", "IN0401234567") =>
                 logger.info("Match found. TransferringMSID with Non Compliant details.")
-                Seq(genericMatch.copy(matchType = MatchType.TransferringMSID, traderId = "IN0401234567", nonCompliantReturns = Some(1), nonCompliantPayments = Some(1)))
+                Seq(genericMatch.copy(matchType = MatchType.TransferringMSID, traderId = "IN0401234567", nonCompliantReturns = Some(2), nonCompliantPayments = Some(1)))
+              case ("BE", "IN0561234567") =>
+                logger.info("Match found. TransferringMSID with Non Compliant details.")
+                Seq(genericMatch.copy(matchType = MatchType.TransferringMSID, traderId = "IN0561234567", nonCompliantReturns = Some(1), nonCompliantPayments = Some(2)))
               case _ =>
                 Seq.empty
             }
