@@ -24,7 +24,7 @@ case class EtmpEnrolmentResponse(
                                   processingDateTime: LocalDateTime,
                                   formBundleNumber: Option[String],
                                   vrn: String,
-                                  iossReference: String,
+                                  intermediary: String,
                                   businessPartner: String
                                 )
 

@@ -19,16 +19,12 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 import play.api.Logging
 import play.api.libs.json.{JsError, Json, JsSuccess, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.SchemeType.{IOSSWithIntermediary, IOSSWithoutIntermediary, OSSNonUnion, OSSUnion}
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.{Clock, LocalDate, LocalDateTime}
-import java.util.UUID
+import java.time.{Clock, LocalDateTime}
 import javax.inject.Inject
 import scala.concurrent.Future
 
