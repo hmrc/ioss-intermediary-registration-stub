@@ -21,15 +21,13 @@ import org.mockito.Mockito.when
 import play.api.http.Status.CREATED
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.{Json, JsSuccess}
+import play.api.libs.json.Json
 import play.api.mvc.Headers
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import uk.gov.hmrc.domain.Vrn
 import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
 import uk.gov.hmrc.iossintermediaryregistrationstub.connectors.RegistrationConnector
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.{EtmpCustomerIdentification, EtmpIdType}
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.Headers.{invalidHeaders, missingHeaders, validHeaders}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RandomService
 
