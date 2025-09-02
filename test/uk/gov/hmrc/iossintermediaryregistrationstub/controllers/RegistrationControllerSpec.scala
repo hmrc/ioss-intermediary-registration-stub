@@ -66,7 +66,7 @@ class RegistrationControllerSpec extends SpecBase {
           processingDateTime = LocalDateTime.now(stubClock),
           formBundleNumber = Some(s"$vrn-id-1234567"),
           vrn = vrn,
-          iossReference = "IN9001234567",
+          intermediary = "IN9001234567",
           businessPartner = "A Business Partner"
         ))
       }
