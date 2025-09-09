@@ -7,3 +7,5 @@ POST        /vec/iossregistration/iossregvalidation/v1        uk.gov.hmrc.iossin
 POST        /vec/iosssubscription/subdatatransfer/v1          uk.gov.hmrc.iossintermediaryregistrationstub.controllers.RegistrationController.createRegistration()
 
 PUT         /subscriptions/:subscriptionId/subscriber         uk.gov.hmrc.iossintermediaryregistrationstub.controllers.EnrolmentsController.confirm(subscriptionId: String)
+
+PUT         /vev/iossregistration/amendregistration/v1        uk.gov.hmrc.iossintermediaryregistrationstub.controllers.RegistrationController.amendRegistration
