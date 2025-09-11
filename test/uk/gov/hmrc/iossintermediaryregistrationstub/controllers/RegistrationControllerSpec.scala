@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,25 +21,26 @@ import org.mockito.Mockito.when
 import play.api.http.Status.CREATED
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
+import play.api.libs.json.{JsSuccess, Json}
 import play.api.mvc.Headers
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
-import uk.gov.hmrc.iossintermediaryregistrationstub.connectors.RegistrationConnector
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.EtmpDisplayRegistration
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.successfulDisplayRegistrationResponse
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.Headers.{invalidHeaders, missingHeaders, validHeaders}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RandomService
 
-import java.time.{Clock, LocalDateTime}
+import java.time.{Clock, LocalDate, LocalDateTime}
 
 class RegistrationControllerSpec extends SpecBase {
 
-  val validFakeHeaders = new Headers(validHeaders)
-  val missingFakeHeaders = new Headers(missingHeaders)
-  val invalidFakeHeaders = new Headers(invalidHeaders)
+  private val validFakeHeaders = new Headers(validHeaders)
+  private val missingFakeHeaders = new Headers(missingHeaders)
+  private val invalidFakeHeaders = new Headers(invalidHeaders)
 
-  private val mockRegistrationConnector: RegistrationConnector = mock[RegistrationConnector]
   private val mockRandomService: RandomService = mock[RandomService]
 
   when(mockRandomService.randomInt(any(), any())) thenReturn 1234567
@@ -216,5 +217,94 @@ class RegistrationControllerSpec extends SpecBase {
     }
   }
 
+  ".getDisplayRegistration" - {
 
+    val intermediaryNumber: String = "IN9001234567"
+    val commencementDate: LocalDate = LocalDate.of(2025, 1, 1)
+
+    "must return OK with a Display Registration payload when requested with a valid Intermediary number" in {
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.RegistrationController.getDisplayRegistration(intermediaryNumber).url)
+          .withHeaders(validFakeHeaders)
+
+        val result = route(application, request).value
+
+        status(result) `mustBe` OK
+        contentAsJson(result).validate[EtmpDisplayRegistration] `mustBe`
+          JsSuccess(successfulDisplayRegistrationResponse(stubClock, commencementDate))
+      }
+    }
+
+    "must return NotFound when requested registration does not exist" in {
+
+      val notFoundIntermediaryNumber: String = "IN9009999999"
+
+      val application = new GuiceApplicationBuilder()
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.RegistrationController.getDisplayRegistration(notFoundIntermediaryNumber).url)
+          .withHeaders(validFakeHeaders)
+
+        val result = route(application, request).value
+
+        status(result) `mustBe` UNPROCESSABLE_ENTITY
+      }
+    }
+
+    "must return Bad Request when a header is invalid" in {
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(GET, routes.RegistrationController.getDisplayRegistration(intermediaryNumber).url)
+            .withHeaders(invalidFakeHeaders)
+
+        val result = route(application, request).value
+
+        status(result) `mustBe` BAD_REQUEST
+      }
+    }
+
+    "must return Bad Request when a header is missing" in {
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(GET, routes.RegistrationController.getDisplayRegistration(intermediaryNumber).url)
+            .withHeaders(missingFakeHeaders)
+
+        val result = route(application, request).value
+
+        status(result) `mustBe` BAD_REQUEST
+      }
+    }
+
+    "must return Bad Request when all headers are missing" in {
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(application) {
+        val request =
+          FakeRequest(GET, routes.RegistrationController.getDisplayRegistration(intermediaryNumber).url)
+
+        val result = route(application, request).value
+
+        status(result) `mustBe` BAD_REQUEST
+      }
+    }
+  }
 }

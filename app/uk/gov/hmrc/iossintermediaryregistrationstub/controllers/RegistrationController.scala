@@ -17,14 +17,18 @@
 package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 
 import play.api.Logging
-import play.api.libs.json.{JsError, Json, JsSuccess, JsValue}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.successfulDisplayRegistrationResponse
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
-import java.time.{Clock, LocalDateTime}
+import java.time.{Clock, LocalDate, LocalDateTime}
+import java.util.UUID
 import javax.inject.Inject
 import scala.concurrent.Future
 
@@ -95,4 +99,30 @@ class RegistrationController @Inject()(
       }
   }
 
+  def getDisplayRegistration(intermediaryNumber: String): Action[AnyContent] = Action {
+    implicit request =>
+
+      RegistrationHeaderHelper.validateHeaders(request.headers.headers) match {
+        case Right(_) =>
+          intermediaryNumber match {
+            case "IN9009999999" =>
+              val notFoundResponse = EisDisplayErrorResponse(EisDisplayErrorDetail(UUID.randomUUID().toString, "089", "Registration not found", LocalDate.now().toString))
+              UnprocessableEntity(Json.toJson(notFoundResponse))
+              
+            case _ => Ok(Json.toJson(successfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
+          }
+
+        case Left(MissingHeader(header)) =>
+          logger.error(s"Bad Request - missing $header")
+          BadRequest(Json.toJson(s"Bad Request - missing $header"))
+
+        case Left(InvalidHeader(header)) =>
+          logger.error(s"Bad Request - invalid $header")
+          BadRequest(Json.toJson(s"Bad Request - invalid $header"))
+
+        case headerError =>
+          logger.error(s"Bad Request - unknown error $headerError")
+          BadRequest(Json.toJson("Bad Request - unknown error"))
+      }
+  }
 }
