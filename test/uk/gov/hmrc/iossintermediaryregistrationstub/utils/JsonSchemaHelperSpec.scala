@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,6 +81,24 @@ class JsonSchemaHelperSpec extends SpecBase {
 
     "must return SuccessSchema for given example" in {
       helper.applySchemaValidation(etmpSchemaPath, Some(Json.parse(etmpGivenExample))) mustBe SuccessSchema
+    }
+  }
+
+  "EtmpDisplayRegistration SchemaHelper.applySchemaValidation" - {
+
+    val etmpDisplaySchemaPath: String = EtmpDisplayRegistrationSchemaData.schemaPath
+    val etmpDisplayGivenExample: String = EtmpDisplayRegistrationSchemaData.givenExample
+
+    "must return NoJsBodyProvided if no jsBody parameter specified" in {
+      helper.applySchemaValidation(etmpDisplaySchemaPath, None) mustBe NoJsBodyProvided
+    }
+
+    "must return FailedToFindSchema if there is no schema found in the given path" in {
+      helper.applySchemaValidation("path", None) mustBe FailedToFindSchema
+    }
+
+    "must return SuccessSchema for given example" in {
+      helper.applySchemaValidation(etmpDisplaySchemaPath, Some(Json.parse(etmpDisplayGivenExample))) mustBe SuccessSchema
     }
   }
 }

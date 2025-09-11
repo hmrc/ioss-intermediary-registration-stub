@@ -19,8 +19,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 import play.api.Logging
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.iossintermediaryregistrationstub.format.Format.dateFormatter
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{CoreRegistrationValidationResult, Match, MatchType, SourceType}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{CoreRegistrationValidationResult, Match, MatchType}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.{JsonSchemaHelper, SuccessSchema}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
