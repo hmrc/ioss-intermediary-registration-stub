@@ -368,10 +368,12 @@
             "businessTelephoneNumber",
             "businessEmailAddress",
             "unusableStatus"
+
           ]
         }
       },
       "required": [
+        "commencementDate",
         "requestDate",
         "registrationDate",
         "registeredForTaxInEUCountries",

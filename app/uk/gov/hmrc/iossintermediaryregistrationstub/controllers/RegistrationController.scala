@@ -23,7 +23,7 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayError
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.successfulDisplayRegistrationResponse
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -77,7 +77,7 @@ class RegistrationController @Inject()(
                       logger.info("Successfully created a registration")
                       val randomNumber = randomService.randomInt(100000)
                       val random7Digit = randomService.randomInt(minValue = 1111111, maxValue = 9999999)
-                      Future.successful(Created(Json.toJson(EtmpEnrolmentResponse(LocalDateTime.now(clock), Some(s"$idValue-id-$randomNumber"), idValue, s"IN900${random7Digit}", "A Business Partner"))))
+                      Future.successful(Created(Json.toJson(EtmpEnrolmentResponse(LocalDateTime.now(clock), Some(s"$idValue-id-$randomNumber"), idValue, s"IN900$random7Digit", "A Business Partner"))))
                   }
                 case JsError(errors) =>
                   logger.error(s"Error with json $errors")
@@ -108,8 +108,12 @@ class RegistrationController @Inject()(
             case "IN9009999999" =>
               val notFoundResponse = EisDisplayErrorResponse(EisDisplayErrorDetail(UUID.randomUUID().toString, "089", "Registration not found", LocalDate.now().toString))
               UnprocessableEntity(Json.toJson(notFoundResponse))
+
+            case "IN9001234567" =>
+              Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
               
-            case _ => Ok(Json.toJson(successfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
+            case _ =>
+              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
           }
 
         case Left(MissingHeader(header)) =>

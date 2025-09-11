@@ -18,7 +18,6 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import play.api.http.Status.CREATED
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsSuccess, Json}
@@ -29,7 +28,7 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.EtmpDisplayRegistration
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.successfulDisplayRegistrationResponse
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.fullSuccessfulDisplayRegistrationResponse
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.Headers.{invalidHeaders, missingHeaders, validHeaders}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RandomService
 
@@ -219,7 +218,7 @@ class RegistrationControllerSpec extends SpecBase {
 
   ".getDisplayRegistration" - {
 
-    val intermediaryNumber: String = "IN9001234567"
+    val intermediaryNumber: String = "IN9012345678"
     val commencementDate: LocalDate = LocalDate.of(2025, 1, 1)
 
     "must return OK with a Display Registration payload when requested with a valid Intermediary number" in {
@@ -236,7 +235,7 @@ class RegistrationControllerSpec extends SpecBase {
 
         status(result) `mustBe` OK
         contentAsJson(result).validate[EtmpDisplayRegistration] `mustBe`
-          JsSuccess(successfulDisplayRegistrationResponse(stubClock, commencementDate))
+          JsSuccess(fullSuccessfulDisplayRegistrationResponse(stubClock, commencementDate))
       }
     }
 

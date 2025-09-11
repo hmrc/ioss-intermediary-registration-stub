@@ -26,7 +26,7 @@ import java.time.{Clock, LocalDate, LocalDateTime}
 
 object DisplayRegistrationData {
 
-  def successfulDisplayRegistrationResponse(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration =
+  def fullSuccessfulDisplayRegistrationResponse(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
     EtmpDisplayRegistration(
       customerIdentification = EtmpCustomerIdentification(
         idType = VRN,
@@ -118,4 +118,46 @@ object DisplayRegistrationData {
       ),
       adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
     )
+  }
+  
+  def minimalSuccessfulDisplayRegistrationResponse(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
+    EtmpDisplayRegistration(
+      customerIdentification = EtmpCustomerIdentification(
+        idType = VRN,
+        idValue = "100000001"
+      ),
+      tradingNames = Seq.empty,
+      clientDetails = Seq.empty,
+      intermediaryDetails = EtmpIntermediaryDetails(
+        otherIossIntermediaryRegistrations = Seq.empty
+      ),
+      otherAddress = EtmpOtherAddress(
+        issuedBy = "ES",
+        tradingName = Some("Other Trading Name 1"),
+        addressLine1 = "Other Address Line 1",
+        addressLine2 = Some("Other Address Line 2"),
+        townOrCity = "Other Town or City",
+        regionOrState = Some("Other Region or State"),
+        postcode = "NE11HM"
+      ),
+      schemeDetails = EtmpDisplaySchemeDetails(
+        commencementDate = commencementDate.format(dateFormatter),
+        euRegistrationDetails = Seq.empty,
+        previousEURegistrationDetails = Seq.empty,
+        contactName = "Rocky Balboa",
+        businessTelephoneNumber = "028 123 4567",
+        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        unusableStatus = false,
+        nonCompliantReturns = None,
+        nonCompliantPayments = None
+      ),
+      exclusions = Seq.empty,
+      bankDetails = EtmpBankDetails(
+        accountName = "Chartoff Winkler and Co.",
+        bic = Some(Bic("BARCGB22456").get),
+        iban = Iban("GB33BUKB202015555555555").toOption.get
+      ),
+      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+    )
+  }
 }

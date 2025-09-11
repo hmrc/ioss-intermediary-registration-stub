@@ -83,4 +83,22 @@ class JsonSchemaHelperSpec extends SpecBase {
       helper.applySchemaValidation(etmpSchemaPath, Some(Json.parse(etmpGivenExample))) mustBe SuccessSchema
     }
   }
+
+  "EtmpDisplayRegistration SchemaHelper.applySchemaValidation" - {
+
+    val etmpDisplaySchemaPath: String = EtmpDisplayRegistrationSchemaData.schemaPath
+    val etmpDisplayGivenExample: String = EtmpDisplayRegistrationSchemaData.givenExample
+
+    "must return NoJsBodyProvided if no jsBody parameter specified" in {
+      helper.applySchemaValidation(etmpDisplaySchemaPath, None) mustBe NoJsBodyProvided
+    }
+
+    "must return FailedToFindSchema if there is no schema found in the given path" in {
+      helper.applySchemaValidation("path", None) mustBe FailedToFindSchema
+    }
+
+    "must return SuccessSchema for given example" in {
+      helper.applySchemaValidation(etmpDisplaySchemaPath, Some(Json.parse(etmpDisplayGivenExample))) mustBe SuccessSchema
+    }
+  }
 }
