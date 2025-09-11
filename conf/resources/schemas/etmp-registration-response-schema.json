@@ -3,7 +3,7 @@
   "type": "object",
   "required": [
     "processingDateTime",
-    "vrn",
+    "formBundleNumber",
     "businessPartner"
   ],
   "properties": {
@@ -29,11 +29,11 @@
       "minLength": 1,
       "maxLength": 12
     },
-    "intermediary": {
-      "description": "IOSS Intermediary",
+    "intRef": {
+      "description": "IOSS Intermediary Reference",
       "type": "string",
       "minLength": 1,
-      "maxLength": 12
+      "maxLength": 20
     },
     "businessPartner": {
       "description": "BP Number",
