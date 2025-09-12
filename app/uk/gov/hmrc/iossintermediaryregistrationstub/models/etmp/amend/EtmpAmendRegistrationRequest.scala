@@ -22,6 +22,7 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 case class EtmpAmendRegistrationRequest(
                                     administration: EtmpAdministration,
                                     changeLog: EtmpAmendRegistrationChangeLog,
+                                    exclusionDetails: Option[EtmpExclusionDetails],
                                     customerIdentification: EtmpAmendCustomerIdentification,
                                     tradingNames: Seq[EtmpTradingName],
                                     intermediaryDetails: Option[EtmpIntermediaryDetails],

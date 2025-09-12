@@ -89,7 +89,7 @@ class SpecBase extends AnyFreeSpec
       iban = Iban("GB33BUKB20201555555555").toOption.get
     )
   )
-  
+
   val amendRegistrationRequest: EtmpAmendRegistrationRequest = EtmpAmendRegistrationRequest(
     administration = registrationRequest.administration.copy(messageType = EtmpMessageType.IOSSIntAmend),
     changeLog = EtmpAmendRegistrationChangeLog(
@@ -100,6 +100,7 @@ class SpecBase extends AnyFreeSpec
       reRegistration = true,
       otherAddress = true
     ),
+    exclusionDetails = None,
     customerIdentification = EtmpAmendCustomerIdentification(iossNumber),
     tradingNames = registrationRequest.tradingNames,
     intermediaryDetails = registrationRequest.intermediaryDetails,
