@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "version": "2.1",
+  "version": "3.0",
   "title": "IOSS-Subscription Amend Request",
   "type": "object",
   "properties": {
@@ -451,6 +451,7 @@
         "contactName",
         "businessTelephoneNumber",
         "businessEmailId"
+
       ],
       "additionalProperties": false
     },
