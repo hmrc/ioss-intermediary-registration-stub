@@ -45,22 +45,26 @@ object DisplayRegistrationData {
           clientExcluded = true
         ),
       ),
-      intermediaryDetails = EtmpIntermediaryDetails(
-        otherIossIntermediaryRegistrations = Seq(
-          EtmpOtherIossIntermediaryRegistrations(
-            issuedBy = "DE",
-            intermediaryNumber = "IM100000001"
+      intermediaryDetails = Some(
+        EtmpIntermediaryDetails(
+          otherIossIntermediaryRegistrations = Seq(
+            EtmpOtherIossIntermediaryRegistrations(
+              issuedBy = "DE",
+              intermediaryNumber = "IM100000001"
+            )
           )
         )
       ),
-      otherAddress = EtmpOtherAddress(
-        issuedBy = "ES",
-        tradingName = Some("Other Trading Name 1"),
-        addressLine1 = "Other Address Line 1",
-        addressLine2 = Some("Other Address Line 2"),
-        townOrCity = "Other Town or City",
-        regionOrState = Some("Other Region or State"),
-        postcode = "NE11HM"
+      otherAddress = Some(
+        EtmpOtherAddress(
+          issuedBy = "ES",
+          tradingName = Some("Other Trading Name 1"),
+          addressLine1 = "Other Address Line 1",
+          addressLine2 = Some("Other Address Line 2"),
+          townOrCity = "Other Town or City",
+          regionOrState = Some("Other Region or State"),
+          postcode = "NE11HM"
+        )
       ),
       schemeDetails = EtmpDisplaySchemeDetails(
         commencementDate = commencementDate.format(dateFormatter),
@@ -93,7 +97,7 @@ object DisplayRegistrationData {
       adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
     )
   }
-  
+
   def minimalSuccessfulDisplayRegistrationResponse(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
     EtmpDisplayRegistration(
       customerIdentification = EtmpCustomerIdentification(
@@ -102,17 +106,21 @@ object DisplayRegistrationData {
       ),
       tradingNames = Seq.empty,
       clientDetails = Seq.empty,
-      intermediaryDetails = EtmpIntermediaryDetails(
-        otherIossIntermediaryRegistrations = Seq.empty
+      intermediaryDetails = Some(
+        EtmpIntermediaryDetails(
+          otherIossIntermediaryRegistrations = Seq.empty
+        )
       ),
-      otherAddress = EtmpOtherAddress(
-        issuedBy = "ES",
-        tradingName = Some("Other Trading Name 1"),
-        addressLine1 = "Other Address Line 1",
-        addressLine2 = Some("Other Address Line 2"),
-        townOrCity = "Other Town or City",
-        regionOrState = Some("Other Region or State"),
-        postcode = "NE11HM"
+      otherAddress = Some(
+        EtmpOtherAddress(
+          issuedBy = "ES",
+          tradingName = Some("Other Trading Name 1"),
+          addressLine1 = "Other Address Line 1",
+          addressLine2 = Some("Other Address Line 2"),
+          townOrCity = "Other Town or City",
+          regionOrState = Some("Other Region or State"),
+          postcode = "NE11HM"
+        )
       ),
       schemeDetails = EtmpDisplaySchemeDetails(
         commencementDate = commencementDate.format(dateFormatter),

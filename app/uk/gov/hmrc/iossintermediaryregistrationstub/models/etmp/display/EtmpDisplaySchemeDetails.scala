@@ -18,7 +18,6 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display
 
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpPreviousEuRegistrationDetails
 
 case class EtmpDisplaySchemeDetails(
                                      commencementDate: String,
