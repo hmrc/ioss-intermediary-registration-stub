@@ -21,7 +21,6 @@ import play.api.libs.json.JsSuccess
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
-import uk.gov.hmrc.iossintermediaryregistrationstub.controllers.routes
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{DesAddress, VatCustomerInfo}
 
 import java.time.LocalDate

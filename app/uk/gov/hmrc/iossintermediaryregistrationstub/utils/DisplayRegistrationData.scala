@@ -77,32 +77,6 @@ object DisplayRegistrationData {
             postcode = Some("AB12 3CD")
           )
         ),
-        previousEURegistrationDetails = Seq(
-          EtmpPreviousEuRegistrationDetails(
-            issuedBy = "HU",
-            registrationNumber = "11122233",
-            schemeType = SchemeType.OSSUnion,
-            intermediaryNumber = None
-          ),
-          EtmpPreviousEuRegistrationDetails(
-            issuedBy = "HU",
-            registrationNumber = "EU111222333",
-            schemeType = SchemeType.OSSNonUnion,
-            intermediaryNumber = None
-          ),
-          EtmpPreviousEuRegistrationDetails(
-            issuedBy = "HU",
-            registrationNumber = "IM3487777777",
-            schemeType = SchemeType.IOSSWithIntermediary,
-            intermediaryNumber = Some("IN3487777777")
-          ),
-          EtmpPreviousEuRegistrationDetails(
-            issuedBy = "CY",
-            registrationNumber = "IM1962223333",
-            schemeType = SchemeType.IOSSWithoutIntermediary,
-            intermediaryNumber = None
-          )
-        ),
         contactName = "Test name",
         businessTelephoneNumber = "1234567890",
         businessEmailId = "email@test.com",
@@ -143,7 +117,6 @@ object DisplayRegistrationData {
       schemeDetails = EtmpDisplaySchemeDetails(
         commencementDate = commencementDate.format(dateFormatter),
         euRegistrationDetails = Seq.empty,
-        previousEURegistrationDetails = Seq.empty,
         contactName = "Rocky Balboa",
         businessTelephoneNumber = "028 123 4567",
         businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
