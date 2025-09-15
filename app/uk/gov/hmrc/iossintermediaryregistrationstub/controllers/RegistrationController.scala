@@ -147,7 +147,7 @@ class RegistrationController @Inject()(
               body.validate[EtmpAmendRegistrationRequest] match {
                 case JsSuccess(etmpAmendRegistrationRequest, _) =>
                   val idValue = etmpAmendRegistrationRequest.customerIdentification.iossNumber
-                  if (idValue == "IM9009999966") {
+                  if (idValue == "IN9009999966") {
                     logger.info("Registration not found")
                     Future.successful(NotFound)
                   } else {
@@ -160,7 +160,7 @@ class RegistrationController @Inject()(
                       processingDateTime = LocalDateTime.now(clock),
                       formBundleNumber = s"$idValue-id-$randomNumber",
                       vrn = idValue,
-                      iossReference = iossNumber,
+                      intermediary = iossNumber,
                       businessPartner = "A Business Partner"
                     ))))
                   }

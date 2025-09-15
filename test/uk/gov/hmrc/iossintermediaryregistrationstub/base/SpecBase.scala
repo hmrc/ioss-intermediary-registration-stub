@@ -35,7 +35,7 @@ class SpecBase extends AnyFreeSpec
   val stubClock: Clock = Clock.fixed(LocalDate.now.atStartOfDay(ZoneId.systemDefault).toInstant, ZoneId.systemDefault)
 
   val vrn = "100000001"
-  val iossNumber = "IM9001234567"
+  val iossNumber = "IN9001234567"
 
   val coreRegistrationRequest: CoreRegistrationRequest = CoreRegistrationRequest(
     "VATNumber",

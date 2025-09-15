@@ -330,7 +330,7 @@ class RegistrationControllerSpec extends SpecBase {
           processingDateTime = LocalDateTime.now(stubClock),
           formBundleNumber = s"$iossNumber-id-1234567",
           vrn = iossNumber,
-          iossReference = iossNumber,
+          intermediary = iossNumber,
           businessPartner = "A Business Partner"
         ))
       }
@@ -339,7 +339,7 @@ class RegistrationControllerSpec extends SpecBase {
 
     "must return NotFound when registration does not exist" in {
 
-      val iossNumber = "IM9009999966"
+      val iossNumber = "IN9009999966"
 
       val updatedRegistrationRequest = amendRegistrationRequest.copy(customerIdentification = EtmpAmendCustomerIdentification(iossNumber))
 
