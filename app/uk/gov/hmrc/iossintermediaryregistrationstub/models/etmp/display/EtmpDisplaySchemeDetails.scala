@@ -23,7 +23,6 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpPreviousEuRe
 case class EtmpDisplaySchemeDetails(
                                      commencementDate: String,
                                      euRegistrationDetails: Seq[EtmpDisplayEuRegistrationDetails],
-                                     previousEURegistrationDetails: Seq[EtmpPreviousEuRegistrationDetails],
                                      contactName: String,
                                      businessTelephoneNumber: String,
                                      businessEmailId: String,
@@ -37,7 +36,6 @@ object EtmpDisplaySchemeDetails {
   private def fromDisplayRegistrationPayload(
                                               commencementDate: String,
                                               euRegistrationDetails: Option[Seq[EtmpDisplayEuRegistrationDetails]],
-                                              previousEURegistrationDetails: Option[Seq[EtmpPreviousEuRegistrationDetails]],
                                               contactNameOrBusinessAddress: String,
                                               businessTelephoneNumber: String,
                                               businessEmailAddress: String,
@@ -48,7 +46,6 @@ object EtmpDisplaySchemeDetails {
     EtmpDisplaySchemeDetails(
       commencementDate = commencementDate,
       euRegistrationDetails = euRegistrationDetails.fold(Seq.empty[EtmpDisplayEuRegistrationDetails])(a => a),
-      previousEURegistrationDetails = previousEURegistrationDetails.fold(Seq.empty[EtmpPreviousEuRegistrationDetails])(a => a),
       contactName = contactNameOrBusinessAddress,
       businessTelephoneNumber = businessTelephoneNumber,
       businessEmailId = businessEmailAddress,
@@ -61,7 +58,6 @@ object EtmpDisplaySchemeDetails {
     (
       (__ \ "commencementDate").read[String] and
         (__ \ "euRegistrationDetails").readNullable[Seq[EtmpDisplayEuRegistrationDetails]] and
-        (__ \ "previousEURegistrationDetails").readNullable[Seq[EtmpPreviousEuRegistrationDetails]] and
         (__ \ "contactDetails" \ "contactNameOrBusinessAddress").read[String] and
         (__ \ "contactDetails" \ "businessTelephoneNumber").read[String] and
         (__ \ "contactDetails" \ "businessEmailAddress").read[String] and
@@ -75,7 +71,6 @@ object EtmpDisplaySchemeDetails {
     (
       (__ \ "commencementDate").write[String] and
         (__ \ "euRegistrationDetails").write[Seq[EtmpDisplayEuRegistrationDetails]] and
-        (__ \ "previousEURegistrationDetails").write[Seq[EtmpPreviousEuRegistrationDetails]] and
         (__ \ "contactDetails" \ "contactNameOrBusinessAddress").write[String] and
         (__ \ "contactDetails" \ "businessTelephoneNumber").write[String] and
         (__ \ "contactDetails" \ "businessEmailAddress").write[String] and
