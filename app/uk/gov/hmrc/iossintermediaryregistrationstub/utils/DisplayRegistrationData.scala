@@ -50,7 +50,7 @@ object DisplayRegistrationData {
           otherIossIntermediaryRegistrations = Seq(
             EtmpOtherIossIntermediaryRegistrations(
               issuedBy = "DE",
-              intermediaryNumber = "IM100000001"
+              intermediaryNumber = "IN2761234567"
             )
           )
         )
@@ -72,6 +72,17 @@ object DisplayRegistrationData {
           EtmpDisplayEuRegistrationDetails(
             issuedBy = "DE",
             vatNumber = Some("123456789"),
+            taxIdentificationNumber = None,
+            fixedEstablishmentTradingName = "Some Trading Name",
+            fixedEstablishmentAddressLine1 = "Line 1",
+            fixedEstablishmentAddressLine2 = Some("Line 2"),
+            townOrCity = "Town",
+            regionOrState = Some("Region"),
+            postcode = Some("AB12 3CD")
+          ),
+          EtmpDisplayEuRegistrationDetails(
+            issuedBy = "FR",
+            vatNumber = Some("XX123456789"),
             taxIdentificationNumber = None,
             fixedEstablishmentTradingName = "Some Trading Name",
             fixedEstablishmentAddressLine1 = "Line 1",
