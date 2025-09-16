@@ -17,11 +17,14 @@
 package uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.{Bic, Iban}
 
-case class EtmpBankDetails(accountName: String, bic: Option[Bic], iban: Iban)
+case class EtmpClientDetails(
+                              clientName: String,
+                              clientIossID: String,
+                              clientExcluded: Boolean
+                            )
 
-object EtmpBankDetails {
-
-  implicit val format: OFormat[EtmpBankDetails] = Json.format[EtmpBankDetails]
+object EtmpClientDetails {
+  
+  implicit val format: OFormat[EtmpClientDetails] = Json.format[EtmpClientDetails]
 }

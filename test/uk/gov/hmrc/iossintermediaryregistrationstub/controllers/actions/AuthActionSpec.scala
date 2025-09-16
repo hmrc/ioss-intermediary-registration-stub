@@ -31,7 +31,6 @@ import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.{Credentials, Retrieval, ~}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
-import uk.gov.hmrc.iossintermediaryregistrationstub.controllers.actions.{AuthAction, AuthActionImpl}
 import uk.gov.hmrc.iossintermediaryregistrationstub.testutils.TestAuthRetrievals.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
