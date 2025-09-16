@@ -25,6 +25,7 @@ import play.api.mvc.Headers
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
+import uk.gov.hmrc.iossintermediaryregistrationstub.connectors.RegistrationConnector
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.EtmpDisplayRegistration
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendCustomerIdentification
@@ -41,6 +42,7 @@ class RegistrationControllerSpec extends SpecBase {
   private val missingFakeHeaders = new Headers(missingHeaders)
   private val invalidFakeHeaders = new Headers(invalidHeaders)
 
+  private val mockRegistrationConnector: RegistrationConnector = mock[RegistrationConnector]
   private val mockRandomService: RandomService = mock[RandomService]
 
   when(mockRandomService.randomInt(any(), any())) thenReturn 1234567
