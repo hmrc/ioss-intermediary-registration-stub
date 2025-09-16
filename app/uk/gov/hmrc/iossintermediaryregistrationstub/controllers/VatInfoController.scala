@@ -102,6 +102,22 @@ class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extend
     )
   }
 
+  private val successfulNonNiDisplayResponse = {
+    VatCustomerInfo(
+      registrationDate = Some(LocalDate.now()),
+      desAddress = DesAddress(
+        line1 = "1818 East Tusculum Street",
+        line2 = Some("Phil Tow"),
+        line3 = None, line4 = None, line5 = None,
+        postCode = Some("LT4 2XW"),
+        countryCode = "EL"), partyType = None,
+      organisationName = Some("Company name"),
+      individual = None,
+      singleMarketIndicator = true,
+      deregistrationDecisionDate = None
+    )
+  }
+
   def getInformation(vrn: String): Action[AnyContent] = Action {
     vrn match {
       case "900000001" => NotFound
@@ -111,6 +127,7 @@ class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extend
       case "700000003" | "700000005" => Ok(Json.toJson(successfulFullResponseNonNi))
       case "700000004" => Ok(Json.toJson(expiredVrnResponse))
       case "700000006" => Ok(Json.toJson(successfulDisplayResponse))
+      case "700000007" => Ok(Json.toJson(successfulNonNiDisplayResponse))
       case _ => Ok(Json.toJson(successfulFullResponse))
     }
   }
