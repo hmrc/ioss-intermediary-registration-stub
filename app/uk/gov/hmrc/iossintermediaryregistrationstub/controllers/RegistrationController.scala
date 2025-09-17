@@ -136,7 +136,7 @@ class RegistrationController @Inject()(
 
       val maybeJsonBody: Option[JsValue] = request.body.asJson
 
-      logger.info(s"Payload received on create registration $maybeJsonBody")
+      logger.info(s"Amend payload: ${request.body}")
 
       jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
         jsonSchemaHelper.applySchemaValidation("/resources/schemas/amend-registration-schema.json", maybeJsonBody) match {
