@@ -21,9 +21,10 @@ import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponse}
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -111,7 +112,11 @@ class RegistrationController @Inject()(
 
             case "IN9001234567" =>
               Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
-              
+
+            case "IN9001234444" =>
+              // Non-Ni Other Address scenario
+              Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponseOtherAddress(clock, LocalDate.of(2025, 1, 1))))
+
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
           }
@@ -127,6 +132,59 @@ class RegistrationController @Inject()(
         case headerError =>
           logger.error(s"Bad Request - unknown error $headerError")
           BadRequest(Json.toJson("Bad Request - unknown error"))
+      }
+  }
+
+  def amendRegistration: Action[AnyContent] = Action.async {
+    implicit request =>
+
+      val maybeJsonBody: Option[JsValue] = request.body.asJson
+
+      logger.info(s"Amend payload: ${request.body}")
+
+      jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
+        jsonSchemaHelper.applySchemaValidation("/resources/schemas/amend-registration-schema.json", maybeJsonBody) match {
+          case SuccessSchema =>
+
+            maybeJsonBody.map { body =>
+              logger.info(s"Amend registration request received $body")
+              body.validate[EtmpAmendRegistrationRequest] match {
+                case JsSuccess(etmpAmendRegistrationRequest, _) =>
+                  val idValue = etmpAmendRegistrationRequest.customerIdentification.iossNumber
+                  if (idValue == "IN9009999966") {
+                    logger.info("Registration not found")
+                    Future.successful(NotFound)
+                  } else {
+                    logger.info("Successfully amended a registration")
+
+                    val randomNumber = randomService.randomInt(100000)
+                    val iossNumber = idValue
+
+                    Future.successful(Ok(Json.toJson(EtmpAmendRegistrationResponse(
+                      processingDateTime = LocalDateTime.now(clock),
+                      formBundleNumber = s"$idValue-id-$randomNumber",
+                      vrn = idValue,
+                      intermediary = iossNumber,
+                      businessPartner = "A Business Partner"
+                    ))))
+                  }
+                case JsError(errors) =>
+                  logger.error(s"Error with json $errors")
+                  Future.successful(BadRequest(Json.toJson(EtmpEnrolmentErrorResponse(errorDetail = EisErrorResponse(
+                    timestamp = LocalDateTime.now(),
+                    errorCode = "400",
+                    errorMessage = "Bad Request - unknown error"
+                  )))))
+              }
+            }.getOrElse {
+              logger.error(s"unable to get json body ${request.body}")
+              Future.successful(InternalServerError(s"unable to get json body ${request.body}"))
+            }
+
+          case failedResult =>
+            logger.error(s"failed create registration request with $failedResult")
+            Future.successful(InternalServerError(s"There was an error with the registration schema $failedResult"))
+        }
       }
   }
 }
