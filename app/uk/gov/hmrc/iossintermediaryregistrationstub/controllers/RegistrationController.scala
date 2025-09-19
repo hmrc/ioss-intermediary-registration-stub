@@ -24,7 +24,7 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponse}
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -112,6 +112,10 @@ class RegistrationController @Inject()(
 
             case "IN9001234567" =>
               Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
+
+            case "IN9001234444" =>
+              // Non-Ni Other Address scenario
+              Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponseOtherAddress(clock, LocalDate.of(2025, 1, 1))))
 
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
