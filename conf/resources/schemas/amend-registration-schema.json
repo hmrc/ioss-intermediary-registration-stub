@@ -1,0 +1,539 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "3.0",
+  "title": "IOSS-Subscription Amend Request",
+  "type": "object",
+  "properties": {
+    "administration": {
+      "type": "object",
+      "properties": {
+        "messageType": {
+          "description": "Fixed Value-IOSSSubscriptionAmend",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 30,
+          "enum": [
+            "IOSSSubscriptionAmend",
+            "IOSSIntAmend",
+            "IOSSIntAmendClient"
+          ]
+        },
+        "regimeID": {
+          "description": "Fixed Value-IOSS",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4,
+          "enum": [
+            "IOSS"
+          ]
+        }
+      },
+      "required": [
+        "messageType",
+        "regimeID"
+      ],
+      "additionalProperties": false
+    },
+    "changeLog": {
+      "properties": {
+        "tradingNames": {
+          "description": "indicate if changed. true - changed. false - not changed ",
+          "type": "boolean"
+        },
+        "fixedEstablishments": {
+          "description": "indicate if changed. true - changed. false - not changed ",
+          "type": "boolean"
+        },
+        "contactDetails": {
+          "description": "indicate if changed. true - changed. false - not changed ",
+          "type": "boolean"
+        },
+        "bankDetails": {
+          "description": "indicate if changed. true - changed. false - not changed ",
+          "type": "boolean"
+        },
+        "reRegistration": {
+          "description": "indicate if changed. true - changed. false - not changed ",
+          "type": "boolean"
+        },
+        "otherAddress": {
+          "description": "indicate if changed. true - changed. false - not changed ",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "tradingNames",
+        "fixedEstablishments",
+        "contactDetails",
+        "bankDetails",
+        "reRegistration",
+        "otherAddress"
+      ],
+      "additionalProperties": false
+    },
+    "exclusionDetails": {
+      "properties": {
+        "revertExclusion": {
+          "description": "Revert Exclusion",
+          "type": "boolean"
+        },
+        "noLongerSupplyGoods": {
+          "description": "No Longer Supply Goods",
+          "type": "boolean"
+        },
+        "noLongerEligible": {
+          "description": "No Longer Eligible",
+          "type": "boolean"
+        },
+        "partyType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12
+        },
+        "exclusionRequestDate": {
+          "$ref": "#/definitions/date_type"
+        },
+        "identificationValidityDate": {
+          "$ref": "#/definitions/date_type"
+        },
+        "intExclusionRequestDate": {
+          "$ref": "#/definitions/date_type"
+        },
+        "newMemberState": {
+          "properties": {
+            "newMemberState": {
+              "description": "if true then to be considered as a new member state",
+              "type": "boolean"
+            },
+            "ceaseSpecialSchemeDate": {
+              "$ref": "#/definitions/date_type"
+            },
+            "ceaseFixedEstDate": {
+              "$ref": "#/definitions/date_type"
+            },
+            "movePOBDate": {
+              "$ref": "#/definitions/date_type"
+            },
+            "issuedBy": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            },
+            "vatNumber": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 12,
+              "pattern": "^[A-Z0-9+*]{1,12}$"
+            }
+          },
+          "required": [
+            "newMemberState"
+          ],
+          "additionalProperties": false
+        },
+        "establishedMemberState": {
+          "properties": {
+            "fixedEstIssuedBy": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            },
+            "fixedEstVATNumber": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 12,
+              "pattern": "^[A-Z0-9+*]{1,12}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "revertExclusion",
+        "noLongerSupplyGoods",
+        "noLongerEligible",
+        "partyType"
+      ],
+      "additionalProperties": false
+    },
+    "customerIdentification": {
+      "type": "object",
+      "properties": {
+        "iossNumber": {
+          "description": "iossNumber",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12
+        },
+        "foreignTaxReference": {
+          "description": "foreignTaxReference",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "iossNumber"
+      ],
+      "additionalProperties": false
+    },
+    "tradingNames": {
+      "description": "trading names",
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "properties": {
+          "tradingName": {
+            "description": "trading name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "tradingName"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "intermediaryDetails": {
+      "type": "object",
+      "properties": {
+        "otherIossIntermediaryRegistrations": {
+          "type": "array",
+          "maxItems": 99,
+          "items": {
+            "type": "object",
+            "properties": {
+              "issuedBy": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2
+              },
+              "intermediaryNumber": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 25
+              }
+            },
+            "required": [
+              "intermediaryNumber",
+              "issuedBy"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "otherAddress": {
+      "type": "object",
+      "properties": {
+        "issuedBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2
+        },
+        "tradingName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "addressLine1": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "addressLine2": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "postcode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "regionOrState": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "townOrCity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      },
+      "required": [
+        "addressLine1",
+        "issuedBy",
+        "townOrCity"
+      ],
+      "additionalProperties": false
+    },
+    "schemeDetails": {
+      "type": "object",
+      "properties": {
+        "commencementDate": {
+          "description": "Commencement Date",
+          "$ref": "#/definitions/date_type"
+        },
+        "euRegistrationDetails": {
+          "description": "eu reg details",
+          "type": "array",
+          "maxItems": 26,
+          "items": {
+            "type": "object",
+            "properties": {
+              "countryOfRegistration": {
+                "description": "country of reg",
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "traderId": {
+                "$ref": "#/definitions/euTraderId"
+              },
+              "tradingName": {
+                "description": "trading name",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              },
+              "fixedEstablishmentAddressLine1": {
+                "description": "fixed Establishment Address Line1-Mandatory if Fixed Establishment checkbox is checked",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              },
+              "fixedEstablishmentAddressLine2": {
+                "description": "fixed Establishment Address Line2",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              },
+              "townOrCity": {
+                "description": "town or city- Mandatory if Fixed Establishment checkbox is checked",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              },
+              "regionOrState": {
+                "description": "region/state name",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              },
+              "postcode": {
+                "description": "postcode",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "countryOfRegistration",
+              "traderId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "previousEURegistrationDetails": {
+          "description": "eu reg details",
+          "type": "array",
+          "maxItems": 99,
+          "items": {
+            "type": "object",
+            "properties": {
+              "issuedBy": {
+                "description": "issuedBy",
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "registrationNumber": {
+                "description": "registrationNumber",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12
+              },
+              "schemeType": {
+                "description": "schemeType",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 25,
+                "enum": [
+                  "OSS Union",
+                  "OSS Non-Union",
+                  "IOSS without intermediary",
+                  "IOSS with intermediary"
+                ]
+              },
+              "intermediaryNumber": {
+                "description": "intermediaryNumber",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12
+              }
+            },
+            "required": [
+              "issuedBy",
+              "registrationNumber",
+              "schemeType"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "websites": {
+          "description": "websites",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 99,
+          "items": {
+            "type": "object",
+            "properties": {
+              "websiteAddress": {
+                "description": "website",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 250
+              }
+            },
+            "required": [
+              "websiteAddress"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "contactName": {
+          "description": "contact name",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "businessTelephoneNumber": {
+          "description": "telephone number of business",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "businessEmailId": {
+          "description": "email id of the business",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "format": "email"
+        },
+        "nonCompliantReturns": {
+          "description": "non compliant returns",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1,
+          "enum": [
+            "1",
+            "2"
+          ]
+        },
+        "nonCompliantPayments": {
+          "description": "non compliant payments",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1,
+          "enum": [
+            "1",
+            "2"
+          ]
+        }
+      },
+      "required": [
+        "contactName",
+        "businessTelephoneNumber",
+        "businessEmailId"
+
+      ],
+      "additionalProperties": false
+    },
+    "bankDetails": {
+      "type": "object",
+      "properties": {
+        "accountName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 70,
+          "pattern": "^[A-Za-z0-9/\\-?:().,'+ ]*$"
+        },
+        "bic": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 11,
+          "pattern": "^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$"
+        },
+        "iban": {
+          "type": "string",
+          "minLength": 14,
+          "maxLength": 34,
+          "pattern": "^[A-Z]{2}[0-9]{2}[0-9A-Z]{10,30}$"
+        }
+      },
+      "required": [
+        "accountName",
+        "iban"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "administration",
+    "changeLog",
+    "customerIdentification"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "date_type": {
+      "type": "string",
+      "pattern": "^(?:[0-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)$"
+    },
+    "euTraderId": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/vatNumber"
+        },
+        {
+          "$ref": "#/definitions/taxReferenceNumber"
+        }
+      ]
+    },
+    "vatNumber": {
+      "type": "object",
+      "properties": {
+        "vatNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12,
+          "pattern": "^[A-Z0-9+*]{1,12}$"
+        }
+      },
+      "required": [
+        "vatNumber"
+      ],
+      "additionalProperties": false
+    },
+    "taxReferenceNumber": {
+      "type": "object",
+      "properties": {
+        "taxReferenceNumber": {
+          "description": "Tax Reference Number (Must contain at least one non-whitespace character)",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        }
+      },
+      "required": [
+        "taxReferenceNumber"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

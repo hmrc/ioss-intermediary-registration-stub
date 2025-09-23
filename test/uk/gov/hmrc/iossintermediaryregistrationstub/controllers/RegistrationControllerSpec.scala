@@ -25,9 +25,11 @@ import play.api.mvc.Headers
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
+import uk.gov.hmrc.iossintermediaryregistrationstub.connectors.RegistrationConnector
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.EtmpDisplayRegistration
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendCustomerIdentification
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.fullSuccessfulDisplayRegistrationResponse
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.Headers.{invalidHeaders, missingHeaders, validHeaders}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RandomService
@@ -40,6 +42,7 @@ class RegistrationControllerSpec extends SpecBase {
   private val missingFakeHeaders = new Headers(missingHeaders)
   private val invalidFakeHeaders = new Headers(invalidHeaders)
 
+  private val mockRegistrationConnector: RegistrationConnector = mock[RegistrationConnector]
   private val mockRandomService: RandomService = mock[RandomService]
 
   when(mockRandomService.randomInt(any(), any())) thenReturn 1234567
@@ -303,6 +306,117 @@ class RegistrationControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) `mustBe` BAD_REQUEST
+      }
+    }
+  }
+  ".amendRegistration" - {
+
+    "must return OK and a response with correct response body when submission is successful" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .overrides(bind[RegistrationConnector].toInstance(mockRegistrationConnector))
+        .overrides(bind[RandomService].toInstance(mockRandomService))
+        .build()
+
+      running(app) {
+        val request =
+          FakeRequest(PUT, routes.RegistrationController.amendRegistration.url)
+            .withJsonBody(Json.toJson(amendRegistrationRequest))
+            .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustEqual OK
+        contentAsJson(result) mustEqual Json.toJson(EtmpAmendRegistrationResponse(
+          processingDateTime = LocalDateTime.now(stubClock),
+          formBundleNumber = s"$iossNumber-id-1234567",
+          vrn = iossNumber,
+          intermediary = iossNumber,
+          businessPartner = "A Business Partner"
+        ))
+      }
+
+    }
+
+    "must return NotFound when registration does not exist" in {
+
+      val iossNumber = "IN9009999966"
+
+      val updatedRegistrationRequest = amendRegistrationRequest.copy(customerIdentification = EtmpAmendCustomerIdentification(iossNumber))
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(app) {
+
+        val request =
+          FakeRequest(PUT, routes.RegistrationController.amendRegistration.url)
+            .withJsonBody(Json.toJson(updatedRegistrationRequest))
+            .withHeaders(validFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustEqual NOT_FOUND
+      }
+
+    }
+
+    "must return Bad Request when a header is invalid" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(app) {
+
+        val request =
+          FakeRequest(PUT, routes.RegistrationController.amendRegistration.url)
+            .withJsonBody(Json.toJson(amendRegistrationRequest))
+            .withHeaders(invalidFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustEqual BAD_REQUEST
+      }
+    }
+
+    "must return Bad Request when a header is missing" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(app) {
+
+        val request =
+          FakeRequest(PUT, routes.RegistrationController.amendRegistration.url)
+            .withJsonBody(Json.toJson(amendRegistrationRequest))
+            .withHeaders(missingFakeHeaders)
+
+        val result = route(app, request).value
+
+        status(result) mustEqual BAD_REQUEST
+      }
+
+    }
+
+    "must return Bad Request when all headers are missing" in {
+
+      val app = new GuiceApplicationBuilder()
+        .overrides(bind[Clock].toInstance(stubClock))
+        .build()
+
+      running(app) {
+
+        val request =
+          FakeRequest(PUT, routes.RegistrationController.amendRegistration.url)
+            .withJsonBody(Json.toJson(amendRegistrationRequest))
+
+        val result = route(app, request).value
+
+        status(result) mustEqual BAD_REQUEST
       }
     }
   }

@@ -22,6 +22,7 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.CoreRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.{EtmpAmendCustomerIdentification, EtmpAmendRegistrationChangeLog, EtmpAmendRegistrationRequest}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{Bic, Iban}
 
 import java.time.{Clock, LocalDate, ZoneId}
@@ -34,6 +35,7 @@ class SpecBase extends AnyFreeSpec
   val stubClock: Clock = Clock.fixed(LocalDate.now.atStartOfDay(ZoneId.systemDefault).toInstant, ZoneId.systemDefault)
 
   val vrn = "100000001"
+  val iossNumber = "IN9001234567"
 
   val coreRegistrationRequest: CoreRegistrationRequest = CoreRegistrationRequest(
     "VATNumber",
@@ -86,5 +88,24 @@ class SpecBase extends AnyFreeSpec
       bic = Some(Bic("ABCDEF2A").get),
       iban = Iban("GB33BUKB20201555555555").toOption.get
     )
+  )
+
+  val amendRegistrationRequest: EtmpAmendRegistrationRequest = EtmpAmendRegistrationRequest(
+    administration = registrationRequest.administration.copy(messageType = EtmpMessageType.IOSSIntAmend),
+    changeLog = EtmpAmendRegistrationChangeLog(
+      tradingNames = true,
+      fixedEstablishments = true,
+      contactDetails = true,
+      bankDetails = true,
+      reRegistration = true,
+      otherAddress = true
+    ),
+    exclusionDetails = None,
+    customerIdentification = EtmpAmendCustomerIdentification(iossNumber),
+    tradingNames = registrationRequest.tradingNames,
+    intermediaryDetails = registrationRequest.intermediaryDetails,
+    otherAddress = registrationRequest.otherAddress,
+    schemeDetails = registrationRequest.schemeDetails,
+    bankDetails = registrationRequest.bankDetails
   )
 }
