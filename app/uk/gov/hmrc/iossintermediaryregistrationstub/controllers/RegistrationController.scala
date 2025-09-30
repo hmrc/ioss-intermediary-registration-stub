@@ -24,7 +24,7 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalDisplayWithClientsRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -110,12 +110,56 @@ class RegistrationController @Inject()(
               val notFoundResponse = EisDisplayErrorResponse(EisDisplayErrorDetail(UUID.randomUUID().toString, "089", "Registration not found", LocalDate.now().toString))
               UnprocessableEntity(Json.toJson(notFoundResponse))
 
-            case "IN9001234567" =>
-              Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
+            case "IN9008888888" =>
+//              No active and no previous clients
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty
+              )))
+
+            case "IN9008888887" =>
+//                Multiple active clients and no previous clients
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Active Client 1", "IM9001144881", false),
+                  EtmpClientDetails("Active Client 2", "IM9001144882", false),
+                  EtmpClientDetails("Active Client 3", "IM9001144883", false)
+                )
+              )))
+
+            case "IN9008888886" =>
+//                No active clients and multiple previous clients
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Active Client 1", "IM9001144884", true),
+                  EtmpClientDetails("Active Client 2", "IM9001144885", true),
+                  EtmpClientDetails("Active Client 3", "IM9001144886", true)
+                )
+              )))
 
             case "IN9001234444" =>
               // Non-Ni Other Address scenario
               Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponseOtherAddress(clock, LocalDate.of(2025, 1, 1))))
+
+            case "IN9001234567" =>
+//              Multiple active and previous clients
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("First Client", "IM9001144771", false),
+                  EtmpClientDetails("Second Client", "IM9001144772", true),
+                  EtmpClientDetails("Third Client", "IM9001144773", false),
+                  EtmpClientDetails("Fourth Client", "IM9001144774", true),
+                  EtmpClientDetails("Fifth Client", "IM9001144775", false),
+                  EtmpClientDetails("Sixth Client", "IM9001144776", true)
+                )
+              )))
 
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
