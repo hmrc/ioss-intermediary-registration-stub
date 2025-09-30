@@ -136,9 +136,9 @@ class RegistrationController @Inject()(
                 clock,
                 LocalDate.of(2025, 1, 1),
                 Seq(
-                  EtmpClientDetails("Active Client 1", "IM9001144884", true),
-                  EtmpClientDetails("Active Client 2", "IM9001144885", true),
-                  EtmpClientDetails("Active Client 3", "IM9001144886", true)
+                  EtmpClientDetails("Previous Client 1", "IM9001144884", true),
+                  EtmpClientDetails("Previous Client 2", "IM9001144885", true),
+                  EtmpClientDetails("Previous Client 3", "IM9001144886", true)
                 )
               )))
 
