@@ -99,40 +99,6 @@ object DisplayRegistrationData {
     )
   }
 
-  def minimalSuccessfulDisplayRegistrationResponse(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
-    EtmpDisplayRegistration(
-      customerIdentification = EtmpCustomerIdentification(
-        idType = VRN,
-        idValue = "100000001"
-      ),
-      tradingNames = Seq.empty,
-      clientDetails = Seq.empty,
-      intermediaryDetails = Some(
-        EtmpIntermediaryDetails(
-          otherIossIntermediaryRegistrations = Seq.empty
-        )
-      ),
-      otherAddress = None,
-      schemeDetails = EtmpDisplaySchemeDetails(
-        commencementDate = commencementDate.format(dateFormatter),
-        euRegistrationDetails = Seq.empty,
-        contactName = "Rocky Balboa",
-        businessTelephoneNumber = "028 123 4567",
-        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
-        unusableStatus = false,
-        nonCompliantReturns = None,
-        nonCompliantPayments = None
-      ),
-      exclusions = Seq.empty,
-      bankDetails = EtmpBankDetails(
-        accountName = "Chartoff Winkler and Co.",
-        bic = Some(Bic("BARCGB22456").get),
-        iban = Iban("GB33BUKB202015555555555").toOption.get
-      ),
-      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
-    )
-  }
-
   def minimalSuccessfulDisplayRegistrationResponseOtherAddress(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
     EtmpDisplayRegistration(
       customerIdentification = EtmpCustomerIdentification(
@@ -157,6 +123,40 @@ object DisplayRegistrationData {
           postcode = "BT111AH"
         )
       ),
+      schemeDetails = EtmpDisplaySchemeDetails(
+        commencementDate = commencementDate.format(dateFormatter),
+        euRegistrationDetails = Seq.empty,
+        contactName = "Rocky Balboa",
+        businessTelephoneNumber = "028 123 4567",
+        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        unusableStatus = false,
+        nonCompliantReturns = None,
+        nonCompliantPayments = None
+      ),
+      exclusions = Seq.empty,
+      bankDetails = EtmpBankDetails(
+        accountName = "Chartoff Winkler and Co.",
+        bic = Some(Bic("BARCGB22456").get),
+        iban = Iban("GB33BUKB202015555555555").toOption.get
+      ),
+      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+    )
+  }
+
+  def minimalDisplayWithClientsRegistrationResponse(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails]): EtmpDisplayRegistration = {
+    EtmpDisplayRegistration(
+      customerIdentification = EtmpCustomerIdentification(
+        idType = VRN,
+        idValue = "100000001"
+      ),
+      tradingNames = Seq.empty,
+      clientDetails = clientList,
+      intermediaryDetails = Some(
+        EtmpIntermediaryDetails(
+          otherIossIntermediaryRegistrations = Seq.empty
+        )
+      ),
+      otherAddress = None,
       schemeDetails = EtmpDisplaySchemeDetails(
         commencementDate = commencementDate.format(dateFormatter),
         euRegistrationDetails = Seq.empty,
