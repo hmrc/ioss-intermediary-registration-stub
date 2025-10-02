@@ -18,6 +18,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
 import uk.gov.hmrc.iossintermediaryregistrationstub.format.Format.dateFormatter
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.TransferringMSID
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpIdType.VRN
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.{EtmpDisplayEuRegistrationDetails, EtmpDisplayRegistration, EtmpDisplaySchemeDetails}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{Bic, Iban}
@@ -176,4 +177,40 @@ object DisplayRegistrationData {
       adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
     )
   }
+
+  def minimalExcludedIntermediaryRegistrationResponse(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails] = Seq.empty): EtmpDisplayRegistration = {
+    EtmpDisplayRegistration(
+      customerIdentification = EtmpCustomerIdentification(
+        idType = VRN,
+        idValue = "100000001"
+      ),
+      tradingNames = Seq.empty,
+      clientDetails = clientList,
+      intermediaryDetails = None,
+      otherAddress = None,
+      schemeDetails = EtmpDisplaySchemeDetails(
+        commencementDate = commencementDate.format(dateFormatter),
+        euRegistrationDetails = Seq.empty,
+        contactName = "Rocky Balboa",
+        businessTelephoneNumber = "028 123 4567",
+        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        unusableStatus = false,
+        nonCompliantReturns = None,
+        nonCompliantPayments = None
+      ),
+      exclusions = Seq(EtmpExclusion(
+        exclusionReason = TransferringMSID,
+        effectiveDate = LocalDate.now(clock).plusDays(1),
+        decisionDate = LocalDate.of(2025, 1, 1),
+        quarantine = false
+      )),
+      bankDetails = EtmpBankDetails(
+        accountName = "Chartoff Winkler and Co.",
+        bic = Some(Bic("BARCGB22456").get),
+        iban = Iban("GB33BUKB202015555555555").toOption.get
+      ),
+      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+    )
+  }
+
 }

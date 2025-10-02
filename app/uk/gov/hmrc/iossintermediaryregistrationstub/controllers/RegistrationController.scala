@@ -24,7 +24,7 @@ import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalDisplayWithClientsRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalDisplayWithClientsRegistrationResponse, minimalExcludedIntermediaryRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -160,6 +160,10 @@ class RegistrationController @Inject()(
                   EtmpClientDetails("Sixth Client", "IM9001144776", true)
                 )
               )))
+
+            case "IN9001234568" =>
+              // Excluded Intermediary
+              Ok(Json.toJson(minimalExcludedIntermediaryRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
 
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
