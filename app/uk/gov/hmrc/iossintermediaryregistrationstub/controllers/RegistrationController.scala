@@ -21,7 +21,7 @@ import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.TransferringMSID
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{Reversal, TransferringMSID}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
@@ -190,6 +190,22 @@ class RegistrationController @Inject()(
                     exclusionReason = TransferringMSID,
                     effectiveDate = LocalDate.now(clock).plusMonths(1),
                     decisionDate = LocalDate.now(clock).plusMonths(1),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9002323333" =>
+              //              Excluded Intermediary with effective date in the past - Reversal
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = Reversal,
+                    effectiveDate = LocalDate.of(2025, 1, 1),
+                    decisionDate = LocalDate.of(2025, 1, 1),
                     quarantine = false
                   )
                 )
