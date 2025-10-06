@@ -59,7 +59,7 @@ class CoreRegistrationValidationControllerSpec extends SpecBase {
 
     "must return 200 and a response with correct response body when submitted" - {
 
-      "with source = VATNumber for MatchType = TraderIdQuarantinedNETP (002)" in {
+      "with source = VATNumber for MatchType = PreviousRegistrationFound (002)" in {
 
         val app = new GuiceApplicationBuilder()
           .overrides(inject.bind[Clock].toInstance(stubClock))
@@ -77,7 +77,7 @@ class CoreRegistrationValidationControllerSpec extends SpecBase {
 
           contentAsJson(result) mustEqual Json.toJson(coreValidationResponses.copy(
             searchId = "333333333", matches = Seq(
-              genericMatch.copy(matchType = MatchType.OtherMSNETPActiveNETP,
+              genericMatch.copy(matchType = MatchType.PreviousRegistrationFound,
                 traderId = "IN2467777777"
               ))))
         }
