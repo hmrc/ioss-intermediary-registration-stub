@@ -79,10 +79,10 @@ class CoreRegistrationValidationController @Inject()(
             val findMatch = (searchIdIssuedBy, searchId) match {
               case (_, MatchInfractionIds.activeSearchId) =>
                 logger.info("Intermediary match found. Active in another MS. GG VRN kickout")
-                Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPActiveNETP, traderId = "IN2467777777"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, traderId = "IN2467777777"))
               case (_, MatchInfractionIds.`quarantinedSearchId`) =>
                 logger.info("Intermediary match found. Quarantined in another MS. GG VRN kickout")
-                Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPQuarantinedNETP, traderId = "IN2467777777"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = Some(4), traderId = "IN2467777777"))
               case (_, MatchInfractionIds.activeSearchIdOss) =>
                 logger.info("Oss match found. Active in another MS. GG VRN does not kickout")
                 Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPActiveNETP, traderId = "333333335"))
@@ -97,7 +97,7 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPQuarantinedNETP, traderId = "IM3333333334"))
               case ("SI", "IN7057777123") =>
                 logger.info("Intermediary match found. Active in another MS. Previous reg Union (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.TraderIdActiveNETP, traderId = "IN7057777777"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, traderId = "IN7057777777"))
               case ("SI", "IN7057777124") =>
                 logger.info("Oss match found. Active in another MS. Previous reg Union (EU VAT number)")
                 Seq(genericMatch.copy(matchType = MatchType.TraderIdActiveNETP, traderId = "333333335"))
@@ -106,7 +106,7 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.TraderIdActiveNETP, traderId = "IM3333333333"))
               case ("LV", "IN4287777123") =>
                 logger.info("Intermediary match found. Quarantined in another MS. Previous reg Union (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.TraderIdQuarantinedNETP, traderId = "IN4287777123"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = Some(4), traderId = "IN4287777123"))
               case ("LV", "IN4287777124") =>
                 logger.info("Oss match found. Quarantined in another MS. Previous reg Union (EU VAT number)")
                 Seq(genericMatch.copy(matchType = MatchType.TraderIdQuarantinedNETP, traderId = "333333335"))
@@ -115,7 +115,7 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.TraderIdQuarantinedNETP, traderId = "IM3333333333"))
               case ("PT", "111222333") =>
                 logger.info("Intermediary match found. Active in another MS. EU details (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "IN4287777123"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, traderId = "IN4287777123"))
               case ("PT", "111222334") =>
                 logger.info("Oss match found. Active in another MS. EU details (EU VAT number)")
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "333333335"))
@@ -124,7 +124,7 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "IM3333333333"))
               case ("PT", "123LIS123") =>
                 logger.info("Intermediary match found. Active in another MS. EU details (Tax ID number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "IN4287777123"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, traderId = "IN4287777123"))
               case ("PT", "123LIS124") =>
                 logger.info("Oss match found. Active in another MS. EU details (Tax ID number)")
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "333333335"))
@@ -133,7 +133,7 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentActiveNETP, traderId = "IM3333333333"))
               case ("LT", "999888777") =>
                 logger.info("Intermediary match found. Quarantined in another MS. EU details (EU VAT number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "IN4287777123"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = Some(4), traderId = "IN4287777123"))
               case ("LT", "999888778") =>
                 logger.info("Oss match found. Quarantined in another MS. EU details (EU VAT number)")
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "333333335"))
@@ -142,7 +142,7 @@ class CoreRegistrationValidationController @Inject()(
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "IM3333333333"))
               case ("LT", "ABC123123") =>
                 logger.info("Intermediary match found. Quarantined in another MS. EU details (Tax ID number)")
-                Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "IN4287777123"))
+                Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = Some(4), traderId = "IN4287777123"))
               case ("LT", "ABC123124") =>
                 logger.info("Oss match found. Quarantined in another MS. EU details (Tax ID number)")
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, traderId = "333333335"))
