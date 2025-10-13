@@ -158,7 +158,8 @@ class RegistrationController @Inject()(
                   EtmpClientDetails("Third Client", "IM9001144773", false),
                   EtmpClientDetails("Fourth Client", "IM9001144774", true),
                   EtmpClientDetails("Fifth Client", "IM9001144775", false),
-                  EtmpClientDetails("Sixth Client", "IM9001144776", true)
+                  EtmpClientDetails("Sixth Client", "IM9001144776", true),
+                  EtmpClientDetails("Seventh Client", "IM9001144777", false),
                 )
               )))
 
