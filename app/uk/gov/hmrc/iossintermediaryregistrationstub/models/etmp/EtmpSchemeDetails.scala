@@ -25,7 +25,6 @@ case class EtmpSchemeDetails(
                               commencementDate: LocalDate,
                               euRegistrationDetails: Seq[EtmpEuRegistrationDetails],
                               previousEURegistrationDetails: Seq[EtmpPreviousEuRegistrationDetails],
-                              websites: Option[Seq[EtmpWebsite]],
                               contactName: String,
                               businessTelephoneNumber: String,
                               businessEmailId: String,

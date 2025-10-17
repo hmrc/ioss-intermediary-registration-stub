@@ -76,7 +76,6 @@ class SpecBase extends AnyFreeSpec
           intermediaryNumber = Some("IM123456789")
         )
       ),
-      websites = None,
       contactName = "Mr Test",
       businessTelephoneNumber = "0123 456789",
       businessEmailId = "mrtest@example.co.uk",
