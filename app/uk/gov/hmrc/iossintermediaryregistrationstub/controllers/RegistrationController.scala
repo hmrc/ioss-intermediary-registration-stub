@@ -238,8 +238,8 @@ class RegistrationController @Inject()(
                 Seq(
                   EtmpExclusion(
                     exclusionReason = FailsToComply,
-                    effectiveDate = LocalDate.now.minusYears(2),
-                    decisionDate = LocalDate.now.minusYears(2),
+                    effectiveDate = LocalDate.now.minusYears(2).minusDays(1),
+                    decisionDate = LocalDate.now.minusYears(2).minusDays(1),
                     quarantine = true
                   )
                 )
