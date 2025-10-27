@@ -21,7 +21,7 @@ import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{Reversal, TransferringMSID}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{FailsToComply, NoLongerMeetsConditions, Reversal, TransferringMSID}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
@@ -209,6 +209,38 @@ class RegistrationController @Inject()(
                     effectiveDate = LocalDate.of(2025, 1, 1),
                     decisionDate = LocalDate.of(2025, 1, 1),
                     quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9002323334" =>
+              //              Quarantined Intermediary with effective date within 2 years
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = FailsToComply,
+                    effectiveDate = LocalDate.now.minusMonths(2),
+                    decisionDate = LocalDate.now.minusMonths(2),
+                    quarantine = true
+                  )
+                )
+              )))
+
+            case "IN9002323335" =>
+              //              Quarantined Intermediary with effective date 2 years ago therefore quarantine has expired
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = FailsToComply,
+                    effectiveDate = LocalDate.now.minusYears(2),
+                    decisionDate = LocalDate.now.minusYears(2),
+                    quarantine = true
                   )
                 )
               )))
