@@ -18,6 +18,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
 import uk.gov.hmrc.iossintermediaryregistrationstub.format.Format.dateFormatter
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.TransferringMSID
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpIdType.VRN
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.{EtmpDisplayEuRegistrationDetails, EtmpDisplayRegistration, EtmpDisplaySchemeDetails}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{Bic, Iban}
@@ -202,6 +203,120 @@ object DisplayRegistrationData {
         nonCompliantPayments = None
       ),
       exclusions = exclusion,
+      bankDetails = EtmpBankDetails(
+        accountName = "Chartoff Winkler and Co.",
+        bic = Some(Bic("BARCGB22456").get),
+        iban = Iban("GB33BUKB202015555555555").toOption.get
+      ),
+      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+    )
+  }
+
+  def fullDisplayWithExcludedClientsRegistrationResponse(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails], exclusion: Seq[EtmpExclusion]): EtmpDisplayRegistration = {
+    EtmpDisplayRegistration(
+      customerIdentification = EtmpCustomerIdentification(
+        idType = VRN,
+        idValue = "100000001"
+      ),
+      tradingNames = Seq(EtmpTradingName("tradingName1"), EtmpTradingName("tradingName2")),
+      clientDetails = clientList,
+      intermediaryDetails = Some(
+        EtmpIntermediaryDetails(
+          otherIossIntermediaryRegistrations = Seq(
+            EtmpOtherIossIntermediaryRegistrations(
+              issuedBy = "DE",
+              intermediaryNumber = "IN2761234567"
+            )
+          )
+        )
+      ),
+      otherAddress = None,
+      schemeDetails = EtmpDisplaySchemeDetails(
+        commencementDate = commencementDate.format(dateFormatter),
+        euRegistrationDetails = Seq(
+          EtmpDisplayEuRegistrationDetails(
+            issuedBy = "DE",
+            vatNumber = Some("123456789"),
+            taxIdentificationNumber = None,
+            fixedEstablishmentTradingName = "Some Trading Name",
+            fixedEstablishmentAddressLine1 = "Line 1",
+            fixedEstablishmentAddressLine2 = Some("Line 2"),
+            townOrCity = "Town",
+            regionOrState = Some("Region"),
+            postcode = Some("AB12 3CD")
+          ),
+          EtmpDisplayEuRegistrationDetails(
+            issuedBy = "FR",
+            vatNumber = Some("XX123456789"),
+            taxIdentificationNumber = None,
+            fixedEstablishmentTradingName = "Some Trading Name",
+            fixedEstablishmentAddressLine1 = "Line 1",
+            fixedEstablishmentAddressLine2 = Some("Line 2"),
+            townOrCity = "Town",
+            regionOrState = Some("Region"),
+            postcode = Some("AB12 3CD")
+          )
+        ),
+        contactName = "Test name",
+        businessTelephoneNumber = "1234567890",
+        businessEmailId = "email@test.com",
+        unusableStatus = false,
+        nonCompliantReturns = None,
+        nonCompliantPayments = None
+      ),
+      exclusions = exclusion,
+      bankDetails = EtmpBankDetails(
+        accountName = "Account name",
+        bic = Some(Bic("ABCDGB2A").get),
+        iban = Iban("GB33BUKB20201555555555").toOption.get
+      ),
+      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+    )
+  }
+
+  def excludedManualNiAddress(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
+    EtmpDisplayRegistration(
+      customerIdentification = EtmpCustomerIdentification(
+        idType = VRN,
+        idValue = "700000003"
+      ),
+      tradingNames = Seq.empty,
+      clientDetails = Seq.empty,
+      intermediaryDetails = Some(
+        EtmpIntermediaryDetails(
+          otherIossIntermediaryRegistrations = Seq.empty
+        )
+      ),
+      otherAddress = Some(
+        EtmpOtherAddress(
+          issuedBy = "GB",
+          tradingName = Some("Company name"),
+          addressLine1 = "Other Address Line 1",
+          addressLine2 = Some("Other Address Line 2"),
+          townOrCity = "Other Town or City",
+          regionOrState = Some("Other Region or State"),
+          postcode = "BT111AH"
+        )
+      ),
+      schemeDetails = EtmpDisplaySchemeDetails(
+        commencementDate = commencementDate.format(dateFormatter),
+        euRegistrationDetails = Seq.empty,
+        contactName = "Rocky Balboa",
+        businessTelephoneNumber = "028 123 4567",
+        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        unusableStatus = false,
+        nonCompliantReturns = None,
+        nonCompliantPayments = None
+      ),
+      exclusions =                 
+        Seq(
+        EtmpExclusion(
+          exclusionReason = TransferringMSID,
+          effectiveDate = LocalDate.of(2025, 1, 1),
+          decisionDate = LocalDate.of(2025, 1, 1),
+          quarantine = false
+        )
+      ),
       bankDetails = EtmpBankDetails(
         accountName = "Chartoff Winkler and Co.",
         bic = Some(Bic("BARCGB22456").get),
