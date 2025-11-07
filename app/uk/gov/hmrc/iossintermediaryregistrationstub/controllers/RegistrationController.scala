@@ -21,11 +21,11 @@ import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{Reversal, TransferringMSID}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{FailsToComply, NoLongerMeetsConditions, Reversal, TransferringMSID}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{fullSuccessfulDisplayRegistrationResponse, minimalDisplayWithClientsRegistrationResponse, minimalDisplayWithExcludedClientsRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{excludedManualNiAddress, fullDisplayWithExcludedClientsRegistrationResponse, fullSuccessfulDisplayRegistrationResponse, minimalDisplayWithClientsRegistrationResponse, minimalDisplayWithExcludedClientsRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -147,6 +147,10 @@ class RegistrationController @Inject()(
               // Non-Ni Other Address scenario
               Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponseOtherAddress(clock, LocalDate.of(2025, 1, 1))))
 
+            case "IN9001235555" =>
+              // Non-Ni Other Address scenario - excluded
+              Ok(Json.toJson(excludedManualNiAddress(clock, LocalDate.of(2025, 1, 1))))
+
             case "IN9001234567" =>
 //              Multiple active and previous clients
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
@@ -165,8 +169,24 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9002323232" =>
-//              Excluded Intermediary with effective date in the past
+//              Excluded Intermediary with effective date in the past - minimal registration details
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = TransferringMSID,
+                    effectiveDate = LocalDate.of(2025, 1, 1),
+                    decisionDate = LocalDate.of(2025, 1, 1),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9001113232" =>
+//              Excluded Intermediary with effective date in the past - full registration details
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
                 Seq.empty,
@@ -213,6 +233,38 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9002323334" =>
+              //              Quarantined Intermediary with effective date within 2 years
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = FailsToComply,
+                    effectiveDate = LocalDate.now.minusMonths(2),
+                    decisionDate = LocalDate.now.minusMonths(2),
+                    quarantine = true
+                  )
+                )
+              )))
+
+            case "IN9002323335" =>
+              //              Quarantined Intermediary with effective date 2 years ago therefore quarantine has expired
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = FailsToComply,
+                    effectiveDate = LocalDate.now.minusYears(2).minusDays(1),
+                    decisionDate = LocalDate.now.minusYears(2).minusDays(1),
+                    quarantine = true
+                  )
+                )
+              )))
+
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
           }
@@ -253,8 +305,13 @@ class RegistrationController @Inject()(
                   } else {
                     logger.info("Successfully amended a registration")
 
+                    val iossNumber = if (etmpAmendRegistrationRequest.changeLog.reRegistration) {
+                      idValue + "-NEW"
+                    } else {
+                      idValue
+                    }
+
                     val randomNumber = randomService.randomInt(100000)
-                    val iossNumber = idValue
 
                     Future.successful(Ok(Json.toJson(EtmpAmendRegistrationResponse(
                       processingDateTime = LocalDateTime.now(clock),
