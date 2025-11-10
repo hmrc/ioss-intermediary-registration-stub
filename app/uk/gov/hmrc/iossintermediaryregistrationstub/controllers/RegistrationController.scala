@@ -143,6 +143,16 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN900666001" =>
+              // Client with amend registration failure
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Error Client", "IM9002222222", false)
+                )
+              )))
+
             case "IN9001234444" =>
               // Non-Ni Other Address scenario
               Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponseOtherAddress(clock, LocalDate.of(2025, 1, 1))))
