@@ -18,7 +18,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
 import uk.gov.hmrc.iossintermediaryregistrationstub.format.Format.dateFormatter
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.TransferringMSID
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{NoLongerSupplies, TransferringMSID}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpIdType.VRN
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.{EtmpDisplayEuRegistrationDetails, EtmpDisplayRegistration, EtmpDisplaySchemeDetails}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{Bic, Iban}
@@ -90,7 +90,7 @@ object DisplayRegistrationData {
         nonCompliantReturns = None,
         nonCompliantPayments = None
       ),
-      exclusions = Seq.empty,
+      exclusions = Seq(EtmpExclusion(NoLongerSupplies, LocalDate.now(clock).minusYears(2), LocalDate.now(clock), false)),
       bankDetails = EtmpBankDetails(
         accountName = "Account name",
         bic = Some(Bic("ABCDGB2A").get),
@@ -308,15 +308,15 @@ object DisplayRegistrationData {
         nonCompliantReturns = None,
         nonCompliantPayments = None
       ),
-      exclusions =                 
+      exclusions =
         Seq(
-        EtmpExclusion(
-          exclusionReason = TransferringMSID,
-          effectiveDate = LocalDate.of(2025, 1, 1),
-          decisionDate = LocalDate.of(2025, 1, 1),
-          quarantine = false
-        )
-      ),
+          EtmpExclusion(
+            exclusionReason = TransferringMSID,
+            effectiveDate = LocalDate.of(2025, 1, 1),
+            decisionDate = LocalDate.of(2025, 1, 1),
+            quarantine = false
+          )
+        ),
       bankDetails = EtmpBankDetails(
         accountName = "Chartoff Winkler and Co.",
         bic = Some(Bic("BARCGB22456").get),
@@ -324,5 +324,126 @@ object DisplayRegistrationData {
       ),
       adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
     )
+  }
+
+  def fullDisplayWithCustomRejoinCoreValidationResponse(
+                                                         clock: Clock,
+                                                         commencementDate: LocalDate,
+                                                         clientList: Seq[EtmpClientDetails],
+                                                         exclusion: Seq[EtmpExclusion],
+                                                         activeVrn: Option[String] = None,
+                                                         quarantinedVrn: Option[String] = None,
+                                                         activeTaxRef: Option[String] = None,
+                                                         quarantinedTaxRef: Option[String] = None,
+                                                         activeIntermediary: Option[String] = None,
+                                                         quarantinedIntermediary: Option[String] = None,
+                                                         issuedBy: String
+                                                       ): EtmpDisplayRegistration = {
+    EtmpDisplayRegistration(
+      customerIdentification = EtmpCustomerIdentification(
+        idType = VRN,
+        idValue = "100000001"
+      ),
+      tradingNames = Seq(EtmpTradingName("tradingName1"), EtmpTradingName("tradingName2")),
+      clientDetails = clientList,
+      intermediaryDetails = Some(
+        EtmpIntermediaryDetails(
+          otherIossIntermediaryRegistrations = Seq(
+            EtmpOtherIossIntermediaryRegistrations(
+              issuedBy = "DE",
+              intermediaryNumber = "IN2761234567"
+            )
+          ) ++ createOtherIossIntermediaryRegistrations(issuedBy, activeIntermediary, quarantinedIntermediary)
+        )
+      ),
+      otherAddress = None,
+      schemeDetails = EtmpDisplaySchemeDetails(
+        commencementDate = commencementDate.format(dateFormatter),
+        euRegistrationDetails = Seq(
+          EtmpDisplayEuRegistrationDetails(
+            issuedBy = "DE",
+            vatNumber = Some("123456789"),
+            taxIdentificationNumber = None,
+            fixedEstablishmentTradingName = "Some Trading Name",
+            fixedEstablishmentAddressLine1 = "Line 1",
+            fixedEstablishmentAddressLine2 = Some("Line 2"),
+            townOrCity = "Town",
+            regionOrState = Some("Region"),
+            postcode = Some("AB12 3CD")
+          ),
+          EtmpDisplayEuRegistrationDetails(
+            issuedBy = "FR",
+            vatNumber = Some("XX123456789"),
+            taxIdentificationNumber = None,
+            fixedEstablishmentTradingName = "Some Trading Name",
+            fixedEstablishmentAddressLine1 = "Line 1",
+            fixedEstablishmentAddressLine2 = Some("Line 2"),
+            townOrCity = "Town",
+            regionOrState = Some("Region"),
+            postcode = Some("AB12 3CD")
+          )
+        ) ++ createEuDisplayRegistration(issuedBy, activeVrn, quarantinedVrn, activeTaxRef, quarantinedTaxRef),
+        contactName = "Test name",
+        businessTelephoneNumber = "1234567890",
+        businessEmailId = "email@test.com",
+        unusableStatus = false,
+        nonCompliantReturns = None,
+        nonCompliantPayments = None
+      ),
+      exclusions = exclusion,
+      bankDetails = EtmpBankDetails(
+        accountName = "Account name",
+        bic = Some(Bic("ABCDGB2A").get),
+        iban = Iban("GB33BUKB20201555555555").toOption.get
+      ),
+      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+    )
+  }
+
+  private def createEuDisplayRegistration(
+                                           issuedBy: String,
+                                           activeVrn: Option[String] = None,
+                                           quarantinedVrn: Option[String] = None,
+                                           activeTaxRef: Option[String] = None,
+                                           quarantinedTaxRef: Option[String] = None,
+                                         ): Option[EtmpDisplayEuRegistrationDetails] = {
+    Some(EtmpDisplayEuRegistrationDetails(
+      issuedBy = issuedBy,
+      vatNumber = determineTaxId(activeVrn, quarantinedVrn),
+      taxIdentificationNumber = determineTaxId(activeTaxRef, quarantinedTaxRef),
+      fixedEstablishmentTradingName = "Some Trading Name",
+      fixedEstablishmentAddressLine1 = "Line 1",
+      fixedEstablishmentAddressLine2 = Some("Line 2"),
+      townOrCity = "Town",
+      regionOrState = Some("Region"),
+      postcode = Some("AB12 3CD")
+    ))
+  }
+
+  private def createOtherIossIntermediaryRegistrations(
+                                                        issuedBy: String,
+                                                        activeIntermediary: Option[String] = None,
+                                                        quarantinedIntermediary: Option[String] = None
+                                                      ): Option[EtmpOtherIossIntermediaryRegistrations] = {
+    Some(EtmpOtherIossIntermediaryRegistrations(
+      issuedBy = issuedBy,
+      intermediaryNumber = determineIntermediaryNumber(activeIntermediary, quarantinedIntermediary)
+    ))
+  }
+
+  private def determineTaxId(a: Option[String], b: Option[String]): Option[String] = {
+    (a, b) match {
+      case (Some(a), _) => Some(a)
+      case (_, Some(b)) => Some(b)
+      case _ => Some("123456789")
+    }
+  }
+
+  private def determineIntermediaryNumber(a: Option[String], b: Option[String]): String = {
+    (a, b) match {
+      case (Some(a), _) => a
+      case (_, Some(b)) => b
+      case _ => "IN9001234568"
+    }
   }
 }

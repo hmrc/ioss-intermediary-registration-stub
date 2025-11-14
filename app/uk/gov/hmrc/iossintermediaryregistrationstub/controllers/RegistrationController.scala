@@ -21,11 +21,11 @@ import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{FailsToComply, NoLongerMeetsConditions, Reversal, TransferringMSID}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{FailsToComply, NoLongerSupplies, Reversal, TransferringMSID}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.{excludedManualNiAddress, fullDisplayWithExcludedClientsRegistrationResponse, fullSuccessfulDisplayRegistrationResponse, minimalDisplayWithClientsRegistrationResponse, minimalDisplayWithExcludedClientsRegistrationResponse, minimalSuccessfulDisplayRegistrationResponseOtherAddress}
+import uk.gov.hmrc.iossintermediaryregistrationstub.utils.DisplayRegistrationData.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.RegistrationHeaderHelper.{InvalidHeader, MissingHeader}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -112,7 +112,7 @@ class RegistrationController @Inject()(
               UnprocessableEntity(Json.toJson(notFoundResponse))
 
             case "IN9008888888" =>
-//              No active and no previous clients
+              //              No active and no previous clients
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -120,7 +120,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9008888887" =>
-//                Multiple active clients and no previous clients
+              //                Multiple active clients and no previous clients
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -132,7 +132,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9008888886" =>
-//                No active clients and multiple previous clients
+              //                No active clients and multiple previous clients
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -162,7 +162,7 @@ class RegistrationController @Inject()(
               Ok(Json.toJson(excludedManualNiAddress(clock, LocalDate.of(2025, 1, 1))))
 
             case "IN9001234567" =>
-//              Multiple active and previous clients
+              //              Multiple active and previous clients
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -179,7 +179,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9002323232" =>
-//              Excluded Intermediary with effective date in the past - minimal registration details
+              //              Excluded Intermediary with effective date in the past - minimal registration details
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -195,7 +195,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9001113232" =>
-//              Excluded Intermediary with effective date in the past - full registration details
+              //              Excluded Intermediary with effective date in the past - full registration details
               Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -212,7 +212,7 @@ class RegistrationController @Inject()(
 
 
             case "IN9003232323" =>
-//              Excluded Intermediary with effective date in the future
+              //              Excluded Intermediary with effective date in the future
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -273,6 +273,114 @@ class RegistrationController @Inject()(
                     quarantine = true
                   )
                 )
+              )))
+
+            case "IN9003344551" =>
+              // Kick out due to active VRN io another country
+              Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
+                clock = clock,
+                commencementDate = LocalDate.of(2025, 1, 1),
+                clientList = Seq.empty,
+                exclusion = Seq(
+                  EtmpExclusion(
+                    exclusionReason = NoLongerSupplies,
+                    effectiveDate = LocalDate.now(clock).minusYears(2),
+                    decisionDate = LocalDate.now(clock).minusYears(2),
+                    quarantine = false
+                  )
+                ),
+                issuedBy = "DE",
+                activeVrn = Some("333333333")
+              )))
+
+            case "IN9003344552" =>
+              // Kick out due to quarantined VRN
+              Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
+                clock = clock,
+                commencementDate = LocalDate.of(2025, 1, 1),
+                clientList = Seq.empty,
+                exclusion = Seq(
+                  EtmpExclusion(
+                    exclusionReason = NoLongerSupplies,
+                    effectiveDate = LocalDate.now(clock).minusYears(2),
+                    decisionDate = LocalDate.now(clock).minusYears(2),
+                    quarantine = false
+                  )
+                ),
+                issuedBy = "DE",
+                quarantinedVrn = Some("333333334")
+              )))
+
+            case "IN9003344553" =>
+              // Kick out due to active Tax Reference in another country
+              Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
+                clock = clock,
+                commencementDate = LocalDate.of(2025, 1, 1),
+                clientList = Seq.empty,
+                exclusion = Seq(
+                  EtmpExclusion(
+                    exclusionReason = NoLongerSupplies,
+                    effectiveDate = LocalDate.now(clock).minusYears(2),
+                    decisionDate = LocalDate.now(clock).minusYears(2),
+                    quarantine = false
+                  )
+                ),
+                issuedBy = "DE",
+                activeTaxRef = Some("333333333")
+              )))
+
+            case "IN9003344554" =>
+              // Kick out due to quarantined Tax Reference
+              Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
+                clock = clock,
+                commencementDate = LocalDate.of(2025, 1, 1),
+                clientList = Seq.empty,
+                exclusion = Seq(
+                  EtmpExclusion(
+                    exclusionReason = NoLongerSupplies,
+                    effectiveDate = LocalDate.now(clock).minusYears(2),
+                    decisionDate = LocalDate.now(clock).minusYears(2),
+                    quarantine = false
+                  )
+                ),
+                issuedBy = "DE",
+                quarantinedTaxRef = Some("333333334")
+              )))
+
+            case "IN9003344555" =>
+              // Kick out due to active Intermediary in another country
+              Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
+                clock = clock,
+                commencementDate = LocalDate.of(2025, 1, 1),
+                clientList = Seq.empty,
+                exclusion = Seq(
+                  EtmpExclusion(
+                    exclusionReason = NoLongerSupplies,
+                    effectiveDate = LocalDate.now(clock).minusYears(2),
+                    decisionDate = LocalDate.now(clock).minusYears(2),
+                    quarantine = false
+                  )
+                ),
+                issuedBy = "SI",
+                activeIntermediary = Some("IN7057777123")
+              )))
+
+            case "IN9003344556" =>
+              // Kick out due to quarantined Intermediary
+              Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
+                clock = clock,
+                commencementDate = LocalDate.of(2025, 1, 1),
+                clientList = Seq.empty,
+                exclusion = Seq(
+                  EtmpExclusion(
+                    exclusionReason = NoLongerSupplies,
+                    effectiveDate = LocalDate.now(clock).minusYears(2),
+                    decisionDate = LocalDate.now(clock).minusYears(2),
+                    quarantine = false
+                  )
+                ),
+                issuedBy = "LV",
+                quarantinedIntermediary = Some("IN4287777123")
               )))
 
             case _ =>
