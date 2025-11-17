@@ -275,7 +275,7 @@ class RegistrationController @Inject()(
                 )
               )))
 
-            case "IN9007230001" | "IN9007230002" =>
+            case "IN9007230002" =>
               //              Excluded Intermediary - excluded 7 months ago - previous intermediary registration scenarios
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
                 clock,
