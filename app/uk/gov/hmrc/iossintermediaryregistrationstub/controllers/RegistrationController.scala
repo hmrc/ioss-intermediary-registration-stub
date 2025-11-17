@@ -329,6 +329,22 @@ class RegistrationController @Inject()(
                 activeTaxRef = Some("333333333")
               )))
 
+            case "IN9007230002" =>
+              //              Excluded Intermediary - excluded 7 months ago - previous intermediary registration scenarios
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(9),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(7),
+                    decisionDate = LocalDate.now().minusMonths(7),
+                    quarantine = false
+                  )
+                )
+              )))
+
             case "IN9003344554" =>
               // Kick out due to quarantined Tax Reference
               Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
