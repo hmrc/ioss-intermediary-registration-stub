@@ -407,17 +407,21 @@ object DisplayRegistrationData {
                                            activeTaxRef: Option[String] = None,
                                            quarantinedTaxRef: Option[String] = None,
                                          ): Option[EtmpDisplayEuRegistrationDetails] = {
-    Some(EtmpDisplayEuRegistrationDetails(
-      issuedBy = issuedBy,
-      vatNumber = determineTaxId(activeVrn, quarantinedVrn),
-      taxIdentificationNumber = determineTaxId(activeTaxRef, quarantinedTaxRef),
-      fixedEstablishmentTradingName = "Some Trading Name",
-      fixedEstablishmentAddressLine1 = "Line 1",
-      fixedEstablishmentAddressLine2 = Some("Line 2"),
-      townOrCity = "Town",
-      regionOrState = Some("Region"),
-      postcode = Some("AB12 3CD")
-    ))
+    if (activeVrn.nonEmpty || quarantinedVrn.nonEmpty || activeTaxRef.nonEmpty || quarantinedTaxRef.nonEmpty) {
+      Some(EtmpDisplayEuRegistrationDetails(
+        issuedBy = issuedBy,
+        vatNumber = determineTaxId(activeVrn, quarantinedVrn),
+        taxIdentificationNumber = determineTaxId(activeTaxRef, quarantinedTaxRef),
+        fixedEstablishmentTradingName = "Some Trading Name",
+        fixedEstablishmentAddressLine1 = "Line 1",
+        fixedEstablishmentAddressLine2 = Some("Line 2"),
+        townOrCity = "Town",
+        regionOrState = Some("Region"),
+        postcode = Some("AB12 3CD")
+      ))
+    } else {
+      None
+    }
   }
 
   private def createOtherIossIntermediaryRegistrations(
@@ -425,17 +429,21 @@ object DisplayRegistrationData {
                                                         activeIntermediary: Option[String] = None,
                                                         quarantinedIntermediary: Option[String] = None
                                                       ): Option[EtmpOtherIossIntermediaryRegistrations] = {
-    Some(EtmpOtherIossIntermediaryRegistrations(
-      issuedBy = issuedBy,
-      intermediaryNumber = determineIntermediaryNumber(activeIntermediary, quarantinedIntermediary)
-    ))
+    if (activeIntermediary.nonEmpty || quarantinedIntermediary.nonEmpty) {
+      Some(EtmpOtherIossIntermediaryRegistrations(
+        issuedBy = issuedBy,
+        intermediaryNumber = determineIntermediaryNumber(activeIntermediary, quarantinedIntermediary)
+      ))
+    } else {
+      None
+    }
   }
 
   private def determineTaxId(a: Option[String], b: Option[String]): Option[String] = {
     (a, b) match {
       case (Some(a), _) => Some(a)
       case (_, Some(b)) => Some(b)
-      case _ => Some("123456789")
+      case _ => None
     }
   }
 
@@ -443,7 +451,7 @@ object DisplayRegistrationData {
     (a, b) match {
       case (Some(a), _) => a
       case (_, Some(b)) => b
-      case _ => "IN9001234568"
+      case _ => throw Exception("Must have an Intermediary number")
     }
   }
 }
