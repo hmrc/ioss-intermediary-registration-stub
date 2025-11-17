@@ -21,7 +21,7 @@ import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{FailsToComply, NoLongerMeetsConditions, Reversal, TransferringMSID}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{FailsToComply, Reversal, TransferringMSID, VoluntarilyLeaves}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
@@ -274,6 +274,42 @@ class RegistrationController @Inject()(
                   )
                 )
               )))
+
+            case "IN9007230001" | "IN9007230002" =>
+              //              Excluded Intermediary - excluded 7 months ago - previous intermediary registration scenarios
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(9),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(7),
+                    decisionDate = LocalDate.now().minusMonths(7),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9007230001" | "IN9008230002" =>
+              //              Excluded Intermediary - excluded 4 months ago - previous intermediary registration scenarios
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(6),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(4),
+                    decisionDate = LocalDate.now().minusMonths(4),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9008230001" | "IN9009230002" =>
+              //Registered intermediary 3 months ago - previous intermediary registration scenarios
+              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.now().minusMonths(3))))
 
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))

@@ -53,16 +53,16 @@ class EnrolmentsController @Inject()(
 
   def es2(userId: String): Action[AnyContent] = cc.auth() { request =>
     val enrolmentsToReturn = request.intNumber match {
-      case Some("IN9006230001") =>
+      case Some("IN9008230001") =>
         EACDEnrolments(Seq(
-          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(6)), Seq(EACDIdentifiers("IntNumber", "IN9007230001"))),
           EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(3)), Seq(EACDIdentifiers("IntNumber", "IN9008230001"))),
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(6)), Seq(EACDIdentifiers("IntNumber", "IN9007230001"))),
         ))
-      case Some("IN9006230002") =>
+      case Some("IN9009230002") =>
         EACDEnrolments(Seq(
-          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(6)), Seq(EACDIdentifiers("IntNumber", "IN9007230001"))),
-          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(3)), Seq(EACDIdentifiers("IntNumber", "IN9008230001"))),
-          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(4)), Seq(EACDIdentifiers("IntNumber", "IN9008230001"))),
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(9)), Seq(EACDIdentifiers("IntNumber", "IN9007230002"))),
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(6)), Seq(EACDIdentifiers("IntNumber", "IN9008230002"))),
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(3)), Seq(EACDIdentifiers("IntNumber", "IN9009230002"))),
         ))
       case _ =>
         EACDEnrolments(Seq(EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock)), Seq(EACDIdentifiers("IntNumber", request.intNumber.get)))))
