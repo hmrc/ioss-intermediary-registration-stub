@@ -289,7 +289,7 @@ class RegistrationController @Inject()(
                     quarantine = false
                   )
                 ),
-                issuedBy = "DE",
+                issuedBy = "EE",
                 activeVrn = Some("333333333")
               )))
 
@@ -307,7 +307,7 @@ class RegistrationController @Inject()(
                     quarantine = false
                   )
                 ),
-                issuedBy = "DE",
+                issuedBy = "EE",
                 quarantinedVrn = Some("333333334")
               )))
 
@@ -325,7 +325,7 @@ class RegistrationController @Inject()(
                     quarantine = false
                   )
                 ),
-                issuedBy = "DE",
+                issuedBy = "EE",
                 activeTaxRef = Some("333333333")
               )))
 
@@ -343,7 +343,7 @@ class RegistrationController @Inject()(
                     quarantine = false
                   )
                 ),
-                issuedBy = "DE",
+                issuedBy = "EE",
                 quarantinedTaxRef = Some("333333334")
               )))
 
