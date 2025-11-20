@@ -345,6 +345,26 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9007230001" | "IN9008230002" =>
+              //              Excluded Intermediary - excluded 4 months ago - previous intermediary registration scenarios
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(6),
+                Seq.empty,
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(4),
+                    decisionDate = LocalDate.now().minusMonths(4),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9008230001" | "IN9009230002" =>
+              //Registered intermediary 3 months ago - previous intermediary registration scenarios
+              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.now().minusMonths(3))))
+
             case "IN9003344554" =>
               // Kick out due to quarantined Tax Reference
               Ok(Json.toJson(fullDisplayWithCustomRejoinCoreValidationResponse(
