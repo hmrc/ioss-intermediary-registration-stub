@@ -55,15 +55,17 @@ class AuthActionImpl @Inject()(
 
       case Some(internalId) ~ enrolments ~ Some(Organisation) ~ _ ~ Some(credentialRole) if credentialRole == User =>
         val maybeVrn = findVrnFromEnrolments(enrolments)
-        block(AuthorisedRequest(request, internalId, maybeVrn))
+        val maybeIntNumber = findIntFromEnrolments(enrolments)
+        block(AuthorisedRequest(request, internalId, maybeVrn, maybeIntNumber))
 
       case _ ~ _ ~ Some(Organisation) ~ _ ~ Some(credentialRole) if credentialRole == Assistant =>
         throw UnsupportedCredentialRole("Unsupported credential role")
 
       case Some(internalId) ~ enrolments ~ Some(Individual) ~ confidence ~ _ =>
         val maybeVrn = findVrnFromEnrolments(enrolments)
+        val maybeIntNumber = findIntFromEnrolments(enrolments)
         if (confidence >= ConfidenceLevel.L200) {
-          block(AuthorisedRequest(request, internalId, maybeVrn))
+          block(AuthorisedRequest(request, internalId, maybeVrn, maybeIntNumber))
         } else {
           throw InsufficientConfidenceLevel("Insufficient confidence level")
         }
@@ -85,6 +87,14 @@ class AuthActionImpl @Inject()(
       .flatMap {
         enrolment =>
           enrolment.identifiers.find(_.key == "VATRegNo").map(e => Vrn(e.value))
+      }
+  }
+
+  private def findIntFromEnrolments(enrolments: Enrolments): Option[String] = {
+    enrolments.enrolments.find(_.key == "HMRC-IOSS-INT")
+      .flatMap {
+        enrolment =>
+          enrolment.identifiers.find(_.key == "IntNumber").map(_.value)
       }
   }
 }
