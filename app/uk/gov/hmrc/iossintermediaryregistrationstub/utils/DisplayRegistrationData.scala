@@ -90,7 +90,7 @@ object DisplayRegistrationData {
         nonCompliantReturns = None,
         nonCompliantPayments = None
       ),
-      exclusions = Seq.empy,
+      exclusions = Seq.empty,
       bankDetails = EtmpBankDetails(
         accountName = "Account name",
         bic = Some(Bic("ABCDGB2A").get),
