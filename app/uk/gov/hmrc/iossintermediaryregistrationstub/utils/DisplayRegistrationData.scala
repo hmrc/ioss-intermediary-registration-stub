@@ -90,7 +90,7 @@ object DisplayRegistrationData {
         nonCompliantReturns = None,
         nonCompliantPayments = None
       ),
-      exclusions = Seq(EtmpExclusion(NoLongerSupplies, LocalDate.now(clock).minusYears(2), LocalDate.now(clock), false)),
+      exclusions = Seq.empty,
       bankDetails = EtmpBankDetails(
         accountName = "Account name",
         bic = Some(Bic("ABCDGB2A").get),
