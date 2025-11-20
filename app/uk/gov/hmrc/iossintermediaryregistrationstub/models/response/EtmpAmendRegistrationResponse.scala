@@ -24,7 +24,7 @@ case class EtmpAmendRegistrationResponse(
                                           processingDateTime: LocalDateTime,
                                           formBundleNumber: String,
                                           vrn: String,
-                                          intermediary: String,
+                                          intReference: String,
                                           businessPartner: String
                                         )
 

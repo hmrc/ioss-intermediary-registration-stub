@@ -471,7 +471,7 @@ class RegistrationController @Inject()(
                       processingDateTime = LocalDateTime.now(clock),
                       formBundleNumber = s"$idValue-id-$randomNumber",
                       vrn = idValue,
-                      intermediary = iossNumber,
+                      intReference = iossNumber,
                       businessPartner = "A Business Partner"
                     ))))
                   }
