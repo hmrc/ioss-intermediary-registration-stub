@@ -238,7 +238,7 @@ class RegistrationControllerSpec extends SpecBase {
 
         status(result) `mustBe` OK
         contentAsJson(result).validate[EtmpDisplayRegistration] `mustBe`
-          JsSuccess(fullSuccessfulDisplayRegistrationResponse(stubClock, commencementDate))
+          JsSuccess(fullSuccessfulDisplayRegistrationResponse(stubClock, commencementDate, false))
       }
     }
 

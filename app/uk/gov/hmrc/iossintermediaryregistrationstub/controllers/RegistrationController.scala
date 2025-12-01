@@ -363,7 +363,7 @@ class RegistrationController @Inject()(
 
             case "IN9008230001" | "IN9009230002" =>
               //Registered intermediary 3 months ago - previous intermediary registration scenarios
-              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.now().minusMonths(3))))
+              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.now().minusMonths(3), false)))
 
             case "IN9003344554" =>
               // Kick out due to quarantined Tax Reference
@@ -419,8 +419,11 @@ class RegistrationController @Inject()(
                 quarantinedIntermediary = Some("IN4287777123")
               )))
 
+            case "IN9002222222" =>
+              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1), true)))
+
             case _ =>
-              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1))))
+              Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1), false)))
           }
 
         case Left(MissingHeader(header)) =>
