@@ -27,7 +27,7 @@ import java.time.{Clock, LocalDate, LocalDateTime}
 
 object DisplayRegistrationData {
 
-  def fullSuccessfulDisplayRegistrationResponse(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
+  def fullSuccessfulDisplayRegistrationResponse(clock: Clock, commencementDate: LocalDate, unusableStatus: Boolean): EtmpDisplayRegistration = {
     EtmpDisplayRegistration(
       customerIdentification = EtmpCustomerIdentification(
         idType = VRN,
@@ -86,7 +86,7 @@ object DisplayRegistrationData {
         contactName = "Test name",
         businessTelephoneNumber = "1234567890",
         businessEmailId = "email@test.com",
-        unusableStatus = false,
+        unusableStatus = unusableStatus,
         nonCompliantReturns = None,
         nonCompliantPayments = None
       ),
