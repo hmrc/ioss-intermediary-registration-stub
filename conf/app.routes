@@ -13,3 +13,5 @@ GET         /vec/iossregistration/viewreg/v1/:intermediaryNumber      uk.gov.hmr
 PUT         /vec/iossregistration/amendregistration/v1                uk.gov.hmrc.iossintermediaryregistrationstub.controllers.RegistrationController.amendRegistration
 
 GET         /enrolment-store/users/:userId/enrolments                 uk.gov.hmrc.iossintermediaryregistrationstub.controllers.EnrolmentsController.es2(userId: String)
+
+PUT         /income-tax/customer/INT/contact-preference              uk.gov.hmrc.iossintermediaryregistrationstub.controllers.ChannelPreferenceStubController.updatePreferences()
