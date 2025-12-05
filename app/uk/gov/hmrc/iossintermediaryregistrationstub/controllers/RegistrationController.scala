@@ -422,6 +422,28 @@ class RegistrationController @Inject()(
             case "IN9002222222" =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1), true)))
 
+            case "IN9001144663" =>
+              //                One active and one excluded client - no returns
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Excluded Client One", "IM9001144663", true),
+                  EtmpClientDetails("Active Client One", "IM9001144664", false),
+                )
+              )))
+
+            case "IN9001144665" =>
+              //                Two excluded clients - no returns
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Excluded Client One", "IM9001144665", true),
+                  EtmpClientDetails("Excluded Client Two", "IM9001144666", true),
+                )
+              )))
+
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1), false)))
           }

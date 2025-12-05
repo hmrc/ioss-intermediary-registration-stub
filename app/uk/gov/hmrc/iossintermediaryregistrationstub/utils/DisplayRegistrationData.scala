@@ -37,13 +37,13 @@ object DisplayRegistrationData {
       clientDetails = Seq(
         EtmpClientDetails(
           clientName = "clientName1",
-          clientIossID = "100000001",
+          clientIossID = "IM9001144661",
           clientExcluded = false
         ),
         EtmpClientDetails(
           clientName = "clientName2",
-          clientIossID = "100000003",
-          clientExcluded = true
+          clientIossID = "IM9001144662",
+          clientExcluded = false
         ),
       ),
       intermediaryDetails = Some(
