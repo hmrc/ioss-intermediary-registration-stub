@@ -143,6 +143,43 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9008888885" =>
+              //                Intermediary and NETP all registered today - no returns due yet
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.now(),
+                Seq(
+                  EtmpClientDetails("Just registered 1", "IM9001144811", false),
+                  EtmpClientDetails("Just registered 2", "IM9001144822", false)
+                )
+              )))
+
+            case "IN9008888884" =>
+              //                Some returns due, none overdue
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(1).withDayOfMonth(1),
+                Seq(
+                  EtmpClientDetails("Returns 1", "IM9001144833", false),
+                  EtmpClientDetails("Returns 2", "IM9001144844", false),
+                  EtmpClientDetails("Returns 3", "IM9001144855", false),
+                  EtmpClientDetails("Returns 4", "IM9001144866", false)
+                )
+              )))
+
+            case "IN9008888883" =>
+              //                Some returns due, some but not all overdue
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(2).withDayOfMonth(1),
+                Seq(
+                  EtmpClientDetails("Returns 1", "IM9001144877", false),
+                  EtmpClientDetails("Returns 2", "IM9001144888", false),
+                  EtmpClientDetails("Returns 3", "IM9001144899", false),
+                  EtmpClientDetails("Returns 4", "IM9001144800", false)
+                )
+              )))
+
             case "IN900666001" =>
               // Client with amend registration failure
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
