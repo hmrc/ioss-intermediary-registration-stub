@@ -231,6 +231,42 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9000306831" =>
+              //              Excluded Intermediary with effective date in the past - minimal registration details
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "Testies", clientIossID = "IM9000306831", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = TransferringMSID,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9000306832" =>
+              //              Excluded Intermediary with effective date in the past - minimal registration details
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "Testies", clientIossID = "IM9000306832", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = TransferringMSID,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = false
+                  )
+                )
+              )))
+
             case "IN9001113232" =>
               //              Excluded Intermediary with effective date in the past - full registration details
               Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
