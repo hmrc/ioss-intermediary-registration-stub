@@ -180,6 +180,17 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9005999997" =>
+              //                Intermediary with NETP transferring MSID for returns
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2024, 1, 1),
+                Seq(
+                  EtmpClientDetails("NETP Partial First Return", "IM9005999997", false),
+                  EtmpClientDetails("NETP Partial Final Return", "IM9009999555", true)
+                )
+              )))
+
             case "IN900666001" =>
               // Client with amend registration failure
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
