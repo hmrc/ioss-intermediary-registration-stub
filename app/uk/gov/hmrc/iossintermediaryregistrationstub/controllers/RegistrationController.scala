@@ -251,6 +251,43 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9000306831" =>
+              //              Excluded intermediary with excluded NETP who has no outstanding returns
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "Testies", clientIossID = "IM9000306831", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = TransferringMSID,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9000306832" =>
+              //              Excluded intermediary with excluded NETP who has a mix of outstanding and not outstanding returns
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "Testies", clientIossID = "IM9000306832", clientExcluded = true),
+                  EtmpClientDetails(clientName = "Testies 2", clientIossID = "IM9000306833", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = TransferringMSID,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = false
+                  )
+                )
+              )))
+
             case "IN9001113232" =>
               //              Excluded Intermediary with effective date in the past - full registration details
               Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
