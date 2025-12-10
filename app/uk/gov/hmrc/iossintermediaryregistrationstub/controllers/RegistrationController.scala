@@ -232,7 +232,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9000306831" =>
-              //              Excluded Intermediary with effective date in the past - minimal registration details
+              //              Excluded intermediary with excluded NETP who has no outstanding returns
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
@@ -250,12 +250,13 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9000306832" =>
-              //              Excluded Intermediary with effective date in the past - minimal registration details
+              //              Excluded intermediary with excluded NETP who has a mix of outstanding and not outstanding returns
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
                 Seq(
-                  EtmpClientDetails(clientName = "Testies", clientIossID = "IM9000306832", clientExcluded = true)
+                  EtmpClientDetails(clientName = "Testies", clientIossID = "IM9000306832", clientExcluded = true),
+                  EtmpClientDetails(clientName = "Testies 2", clientIossID = "IM9000306833", clientExcluded = true)
                 ),
                 Seq(
                   EtmpExclusion(
