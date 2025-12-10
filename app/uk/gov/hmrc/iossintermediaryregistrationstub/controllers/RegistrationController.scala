@@ -215,6 +215,26 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9001001001" =>
+              //                Registered last year with one client to be used for returns over multiple years
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2024, 12, 1),
+                Seq(
+                  EtmpClientDetails("Multiple Years of Returns", "IM9001001001", false)
+                )
+              )))
+
+            case "IN9002002002" =>
+              //                Registered over 6 years ago to test NETP returns over 6 years old
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusYears(6).minusMonths(2),
+                Seq(
+                  EtmpClientDetails("Returns over 6 years old", "IM9002002002", false)
+                )
+              )))
+
             case "IN9002323232" =>
               //              Excluded Intermediary with effective date in the past - minimal registration details
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
