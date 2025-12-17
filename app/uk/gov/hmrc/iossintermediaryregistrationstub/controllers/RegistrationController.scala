@@ -585,6 +585,25 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9001230002" =>
+              //              Excluded Intermediary with excluded NETP - previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(6),
+                Seq(
+                  EtmpClientDetails("New Client One", "IM9001144667", true),
+                  EtmpClientDetails("New Client Two", "IM9001144668", true),
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(4),
+                    decisionDate = LocalDate.now().minusMonths(4),
+                    quarantine = false
+                  )
+                )
+              )))
+
             case "IN9008230001" | "IN9009230002" =>
               //Registered intermediary 3 months ago - previous intermediary registration scenarios
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.now().minusMonths(3), false)))
