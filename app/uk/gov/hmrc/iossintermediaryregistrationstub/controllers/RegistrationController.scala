@@ -186,8 +186,8 @@ class RegistrationController @Inject()(
                 clock,
                 LocalDate.of(2024, 1, 1),
                 Seq(
-                  EtmpClientDetails("NETP Partial First Return", "IM9005999997", false),
-                  EtmpClientDetails("NETP Partial Final Return", "IM9009999555", true)
+                  EtmpClientDetails("NETP Partial First Return", "IM9005555551", false),
+                  EtmpClientDetails("NETP Partial Final Return", "IM9005555552", true)
                 )
               )))
 
