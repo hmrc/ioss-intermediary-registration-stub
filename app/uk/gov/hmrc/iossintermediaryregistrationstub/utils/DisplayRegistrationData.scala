@@ -185,7 +185,7 @@ object DisplayRegistrationData {
         idValue = "100000001"
       ),
       tradingNames = Seq.empty,
-      clientDetails = Seq.empty,
+      clientDetails = clientList,
       intermediaryDetails = Some(
         EtmpIntermediaryDetails(
           otherIossIntermediaryRegistrations = Seq.empty
