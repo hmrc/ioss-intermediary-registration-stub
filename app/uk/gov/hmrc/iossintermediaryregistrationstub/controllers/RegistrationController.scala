@@ -180,6 +180,17 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9006655333" =>
+              //                Return submission failures
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2023, 10, 1),
+                Seq(
+                  EtmpClientDetails("Failure 1", "IM9007777771", false),
+                  EtmpClientDetails("Failure 2", "IM9007777772", false)
+                )
+              )))
+
             case "IN9006655444" =>
               //                Multiple saved returns
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
