@@ -180,6 +180,41 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9006655333" =>
+              //                Return submission failures
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2023, 10, 1),
+                Seq(
+                  EtmpClientDetails("Failure 1", "IM9007777771", false),
+                  EtmpClientDetails("Failure 2", "IM9007777772", false)
+                )
+              )))
+
+            case "IN9006655444" =>
+              //                Multiple saved returns
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Saved Return 1", "IM9006655441", false),
+                  EtmpClientDetails("Saved Return 2", "IM9006655442", false),
+                  EtmpClientDetails("Saved Return 3", "IM9006655443", false)
+                )
+              )))
+
+            case "IN9006655555" =>
+              //                One saved return
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Single Saved Return", "IM9006655551", false),
+                  EtmpClientDetails("No Saved Return 1", "IM9006655552", false),
+                  EtmpClientDetails("No Saved Return 2", "IM9006655553", false)
+                )
+              )))
+
             case "IN9005999997" =>
               //                Intermediary with NETP transferring MSID for returns
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
