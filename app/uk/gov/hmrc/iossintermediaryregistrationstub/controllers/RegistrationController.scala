@@ -17,11 +17,11 @@
 package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 
 import play.api.Logging
-import play.api.libs.json.{JsError, Json, JsSuccess, JsValue}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{FailsToComply, NoLongerSupplies, Reversal, TransferringMSID, VoluntarilyLeaves}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{CeasedTrade, FailsToComply, NoLongerSupplies, Reversal, TransferringMSID, VoluntarilyLeaves}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.amend.EtmpAmendRegistrationRequest
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.response.{EisErrorResponse, EtmpAmendRegistrationResponse, EtmpEnrolmentErrorResponse, EtmpEnrolmentResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.utils.*
@@ -295,6 +295,80 @@ class RegistrationController @Inject()(
                     effectiveDate = LocalDate.of(2025, 3, 1),
                     decisionDate = LocalDate.of(2025, 3, 1),
                     quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9000306833" =>
+              //              HMRC excluded intermediary with excluded NETP who has no outstanding returns
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "HMRC excluded intermediary test", clientIossID = "IM9000306834", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = NoLongerMeetsConditions,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9000306834" =>
+              //              HMRC excluded intermediary with excluded NETP who has a mix of outstanding and not outstanding returns
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "HMRC excluded intermediary test 1", clientIossID = "IM9000306835", clientExcluded = true),
+                  EtmpClientDetails(clientName = "HMRC excluded intermediary test 2", clientIossID = "IM9000306836", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = CeasedTrade,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9000306835" =>
+              //              Quarantined intermediary with excluded NETP who has no outstanding returns
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "HMRC excluded intermediary test", clientIossID = "IM9000306837", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = FailsToComply,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = true
+                  )
+                )
+              )))
+
+            case "IN9000306836" =>
+              //              Quarantined intermediary with excluded NETP who has a mix of outstanding and not outstanding returns
+              Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails(clientName = "HMRC excluded intermediary test 1", clientIossID = "IM9000306838", clientExcluded = true),
+                  EtmpClientDetails(clientName = "HMRC excluded intermediary test 2", clientIossID = "IM9000306839", clientExcluded = true)
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = FailsToComply,
+                    effectiveDate = LocalDate.of(2025, 3, 1),
+                    decisionDate = LocalDate.of(2025, 3, 1),
+                    quarantine = true
                   )
                 )
               )))
