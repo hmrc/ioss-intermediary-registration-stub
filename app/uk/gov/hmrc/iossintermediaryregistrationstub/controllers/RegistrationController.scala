@@ -246,6 +246,16 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9003003003" =>
+              //                Has client with exclusion that has been reversed
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("NETP Exclusion Reversed", "IM9003003003", true)
+                )
+              )))
+
             case "IN9002323232" =>
               //              Excluded Intermediary with effective date in the past - minimal registration details
               Ok(Json.toJson(minimalDisplayWithExcludedClientsRegistrationResponse(
