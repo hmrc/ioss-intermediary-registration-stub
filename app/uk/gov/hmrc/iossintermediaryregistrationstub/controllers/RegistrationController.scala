@@ -281,6 +281,16 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9003003003" =>
+              //                Has client with exclusion that has been reversed
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("NETP Exclusion Reversed", "IM9003003003", true)
+                )
+              )))
+
             case "IN9004004004" =>
               //                Registered over 3 years ago to test excluded NETP returns and payments over 3 years old
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
