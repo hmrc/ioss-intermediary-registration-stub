@@ -668,6 +668,18 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9002223331" =>
+              //                Two excluded clients - one self and one hmrc - future dates, plus reversal
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Excluded Self Future", "IM9002223331", true),
+                  EtmpClientDetails("Excluded HMRC Future", "IM9002223332", true),
+                  EtmpClientDetails("Reversal", "IM9002223333", false),
+                )
+              )))
+
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1), false)))
           }
