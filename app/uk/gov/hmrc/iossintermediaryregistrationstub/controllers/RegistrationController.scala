@@ -585,14 +585,33 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9000230002" =>
+              //              Excluded Intermediary with excluded NETPs - previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(9),
+                Seq(
+                  EtmpClientDetails("New Client One", "IM9001144667", true),
+                  EtmpClientDetails("New Client Two", "IM9001144668", true),
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(7),
+                    decisionDate = LocalDate.now().minusMonths(7),
+                    quarantine = false
+                  )
+                )
+              )))
+
             case "IN9001230002" =>
-              //              Excluded Intermediary with excluded NETP - previous intermediary registration scenarios
+              //              Excluded Intermediary with excluded NETPs - previous intermediary registration scenarios
               Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.now().minusMonths(6),
                 Seq(
-                  EtmpClientDetails("New Client One", "IM9001144667", true),
-                  EtmpClientDetails("New Client Two", "IM9001144668", true),
+                  EtmpClientDetails("New Client Three", "IM9001144669", true),
+                  EtmpClientDetails("New Client Four", "IM9001144670", true),
                 ),
                 Seq(
                   EtmpExclusion(
@@ -602,6 +621,18 @@ class RegistrationController @Inject()(
                     quarantine = false
                   )
                 )
+              )))
+
+            case "IN9002230002" =>
+              //              Active Intermediary with active NETPs - previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(3),
+                Seq(
+                  EtmpClientDetails("New Client Five", "IM9001144671", false),
+                  EtmpClientDetails("New Client Six", "IM9001144672", false),
+                ),
+                Seq.empty
               )))
 
             case "IN9008230001" | "IN9009230002" =>

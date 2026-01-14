@@ -62,8 +62,13 @@ class EnrolmentsController @Inject()(
         EACDEnrolments(Seq(
           EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(9)), Seq(EACDIdentifiers("IntNumber", "IN9007230002"))),
           EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(6)), Seq(EACDIdentifiers("IntNumber", "IN9008230002"))),
-          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(3)), Seq(EACDIdentifiers("IntNumber", "IN9009230002"))),
-          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(6)), Seq(EACDIdentifiers("IntNumber", "IN9001230002")))
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(3)), Seq(EACDIdentifiers("IntNumber", "IN9009230002")))
+        ))
+      case Some("IN9002230002") =>
+        EACDEnrolments(Seq(
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(9)), Seq(EACDIdentifiers("IntNumber", "IN9000230002"))),
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(6)), Seq(EACDIdentifiers("IntNumber", "IN9001230002"))),
+          EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock).minusMonths(3)), Seq(EACDIdentifiers("IntNumber", "IN9002230002")))
         ))
       case _ =>
         EACDEnrolments(Seq(EACDEnrolment("HMRC-IOSS-INT", "Activated", Some(LocalDateTime.now(clock)), Seq(EACDIdentifiers("IntNumber", request.intNumber.get)))))
