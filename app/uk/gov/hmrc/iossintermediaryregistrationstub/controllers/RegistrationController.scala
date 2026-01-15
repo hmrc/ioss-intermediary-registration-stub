@@ -586,7 +586,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9000230002" =>
-              //              Excluded Intermediary with excluded NETPs - previous intermediary registration scenarios
+              //              Excluded Intermediary with excluded NETPs - multiple previous intermediary registration scenarios
               Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.now().minusMonths(9),
@@ -605,7 +605,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9001230002" =>
-              //              Excluded Intermediary with excluded NETPs - previous intermediary registration scenarios
+              //              Excluded Intermediary with excluded NETPs - multiple previous intermediary registration scenarios
               Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.now().minusMonths(6),
@@ -624,13 +624,44 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9002230002" =>
-              //              Active Intermediary with active NETPs - previous intermediary registration scenarios
+              //              Active Intermediary with active NETPs - multiple previous intermediary registration scenarios
               Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
                 clock,
                 LocalDate.now().minusMonths(3),
                 Seq(
                   EtmpClientDetails("New Client Five", "IM9001144671", false),
                   EtmpClientDetails("New Client Six", "IM9001144672", false),
+                ),
+                Seq.empty
+              )))
+
+            case "IN9001230001" =>
+              //              Excluded Intermediary with excluded NETPs - single previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(6),
+                Seq(
+                  EtmpClientDetails("Single Previous Reg - Client One", "IM9002144669", true),
+                  EtmpClientDetails("Single Previous Reg - Client Two", "IM9002144670", true),
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(4),
+                    decisionDate = LocalDate.now().minusMonths(4),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9002230001" =>
+              //              Active Intermediary with active NETPs - single previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(3),
+                Seq(
+                  EtmpClientDetails("Current Reg - Client One", "IM9002144671", false),
+                  EtmpClientDetails("Current Reg - Client Two", "IM9002144672", false),
                 ),
                 Seq.empty
               )))
