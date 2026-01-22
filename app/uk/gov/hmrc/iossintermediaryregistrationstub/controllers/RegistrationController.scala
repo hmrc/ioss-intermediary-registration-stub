@@ -585,6 +585,87 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9000230002" =>
+              //              Excluded Intermediary with excluded NETPs - multiple previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(9),
+                Seq(
+                  EtmpClientDetails("New Client One", "IM9001144667", true),
+                  EtmpClientDetails("New Client Two", "IM9001144668", true),
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(7),
+                    decisionDate = LocalDate.now().minusMonths(7),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9001230002" =>
+              //              Excluded Intermediary with excluded NETPs - multiple previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(6),
+                Seq(
+                  EtmpClientDetails("New Client Three", "IM9001144669", true),
+                  EtmpClientDetails("New Client Four", "IM9001144670", true),
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(4),
+                    decisionDate = LocalDate.now().minusMonths(4),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9002230002" =>
+              //              Active Intermediary with active NETPs - multiple previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(3),
+                Seq(
+                  EtmpClientDetails("New Client Five", "IM9001144671", false),
+                  EtmpClientDetails("New Client Six", "IM9001144672", false),
+                ),
+                Seq.empty
+              )))
+
+            case "IN9001230001" =>
+              //              Excluded Intermediary with excluded NETPs - single previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(6),
+                Seq(
+                  EtmpClientDetails("Single Previous Reg - Client One", "IM9002144669", true),
+                  EtmpClientDetails("Single Previous Reg - Client Two", "IM9002144670", true),
+                ),
+                Seq(
+                  EtmpExclusion(
+                    exclusionReason = VoluntarilyLeaves,
+                    effectiveDate = LocalDate.now().minusMonths(4),
+                    decisionDate = LocalDate.now().minusMonths(4),
+                    quarantine = false
+                  )
+                )
+              )))
+
+            case "IN9002230001" =>
+              //              Active Intermediary with active NETPs - single previous intermediary registration scenarios
+              Ok(Json.toJson(fullDisplayWithExcludedClientsRegistrationResponse(
+                clock,
+                LocalDate.now().minusMonths(3),
+                Seq(
+                  EtmpClientDetails("Current Reg - Client One", "IM9002144671", false),
+                  EtmpClientDetails("Current Reg - Client Two", "IM9002144672", false),
+                ),
+                Seq.empty
+              )))
+
             case "IN9008230001" | "IN9009230002" =>
               //Registered intermediary 3 months ago - previous intermediary registration scenarios
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.now().minusMonths(3), false)))
