@@ -121,7 +121,7 @@ object DisplayRegistrationData {
           addressLine2 = Some("Other Address Line 2"),
           townOrCity = "Other Town or City",
           regionOrState = Some("Other Region or State"),
-          postcode = "BT111AH"
+          postcode = Some("BT111AH")
         )
       ),
       schemeDetails = EtmpDisplaySchemeDetails(
@@ -295,7 +295,7 @@ object DisplayRegistrationData {
           addressLine2 = Some("Other Address Line 2"),
           townOrCity = "Other Town or City",
           regionOrState = Some("Other Region or State"),
-          postcode = "BT111AH"
+          postcode = Some("BT111AH")
         )
       ),
       schemeDetails = EtmpDisplaySchemeDetails(
