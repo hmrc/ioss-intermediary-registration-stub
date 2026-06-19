@@ -341,7 +341,7 @@ object DisplayRegistrationData {
       ),
       otherAddress = Some(
         EtmpOtherAddress(
-          issuedBy = "AK",
+          issuedBy = "AF",
           tradingName = None,
           addressLine1 = "Non NI Address Line 1",
           addressLine2 = Some("Non NI Address Line 2"),
