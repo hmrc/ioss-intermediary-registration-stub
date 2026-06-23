@@ -18,7 +18,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
 import uk.gov.hmrc.iossintermediaryregistrationstub.format.Format.dateFormatter
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{NoLongerSupplies, TransferringMSID}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.TransferringMSID
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpIdType.VRN
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.{EtmpDisplayEuRegistrationDetails, EtmpDisplayRegistration, EtmpDisplaySchemeDetails}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{Bic, Iban}
@@ -333,7 +333,13 @@ object DisplayRegistrationData {
         idValue = "700000003"
       ),
       tradingNames = Seq.empty,
-      clientDetails = Seq.empty,
+      clientDetails = Seq(
+        EtmpClientDetails(
+          clientName = "Excluded Intermediary Client 1",
+          clientIossID = "IM9001236666",
+          clientExcluded = true
+        )
+      ),
       intermediaryDetails = Some(
         EtmpIntermediaryDetails(
           otherIossIntermediaryRegistrations = Seq.empty
@@ -364,8 +370,8 @@ object DisplayRegistrationData {
         Seq(
           EtmpExclusion(
             exclusionReason = TransferringMSID,
-            effectiveDate = LocalDate.of(2025, 1, 1),
-            decisionDate = LocalDate.of(2025, 1, 1),
+            effectiveDate = LocalDate.of(2025, 3, 1),
+            decisionDate = LocalDate.of(2025, 3, 1),
             quarantine = false
           )
         ),

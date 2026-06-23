@@ -17,13 +17,10 @@
 package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.base.SpecBase
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.{DesAddress, VatCustomerInfo}
-
-import java.time.LocalDate
 
 class ChannelPreferenceStubControllerSpec extends SpecBase {
 
