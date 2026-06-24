@@ -246,7 +246,21 @@ class RegistrationController @Inject()(
 
             case "IN9001236666" =>
               // Non-Ni Other Address scenario - excluded
-              Ok(Json.toJson(excludedOtherAddressNonNi(clock, LocalDate.of(2025, 1, 1))))
+              Ok(Json.toJson(excludedOtherAddressNonNi(
+                clock, 
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Excluded Intermediary Client 1", "IM9001236666", false)
+                )
+              )))
+
+            case "IN9001237777" =>
+              // Non-Ni Other Address scenario - excluded - no clients
+              Ok(Json.toJson(excludedOtherAddressNonNi(
+                clock, 
+                LocalDate.of(2025, 1, 1),
+                Seq.empty
+              )))
 
             case "IN9001234567" =>
               //              Multiple active and previous clients

@@ -326,20 +326,14 @@ object DisplayRegistrationData {
     )
   }
 
-  def excludedOtherAddressNonNi(clock: Clock, commencementDate: LocalDate): EtmpDisplayRegistration = {
+  def excludedOtherAddressNonNi(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails]): EtmpDisplayRegistration = {
     EtmpDisplayRegistration(
       customerIdentification = EtmpCustomerIdentification(
         idType = VRN,
         idValue = "700000003"
       ),
       tradingNames = Seq.empty,
-      clientDetails = Seq(
-        EtmpClientDetails(
-          clientName = "Excluded Intermediary Client 1",
-          clientIossID = "IM9001236666",
-          clientExcluded = true
-        )
-      ),
+      clientDetails = clientList,
       intermediaryDetails = Some(
         EtmpIntermediaryDetails(
           otherIossIntermediaryRegistrations = Seq.empty
