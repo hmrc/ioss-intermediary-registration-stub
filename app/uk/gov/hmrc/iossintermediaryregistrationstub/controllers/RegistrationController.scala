@@ -250,8 +250,8 @@ class RegistrationController @Inject()(
                 clock, 
                 LocalDate.of(2025, 1, 1),
                 Seq(
-                  EtmpClientDetails("Excluded Intermediary Client 1", "IM9001236666", true)
-                )
+                  EtmpClientDetails("Excluded Intermediary Client 1", "IM9001236666", true)),
+                  "AF"
               )))
 
             case "IN9001237777" =>
@@ -259,7 +259,17 @@ class RegistrationController @Inject()(
               Ok(Json.toJson(excludedOtherAddressNonNi(
                 clock, 
                 LocalDate.of(2025, 1, 1),
-                Seq.empty
+                Seq.empty,
+                "AF"
+              )))
+
+            case "IN9001238888" =>
+              // Non-Ni Other Address scenario - excluded - no clients - Specifically United Kingdom
+              Ok(Json.toJson(excludedOtherAddressNonNi(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                "GB"
               )))
 
             case "IN9001234567" =>
