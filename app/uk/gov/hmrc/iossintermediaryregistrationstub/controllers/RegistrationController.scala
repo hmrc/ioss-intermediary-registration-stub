@@ -250,7 +250,7 @@ class RegistrationController @Inject()(
                 clock, 
                 LocalDate.of(2025, 1, 1),
                 Seq(
-                  EtmpClientDetails("Excluded Intermediary Client 1", "IM9001236666", false)
+                  EtmpClientDetails("Excluded Intermediary Client 1", "IM9001236666", true)
                 )
               )))
 
