@@ -129,7 +129,7 @@ object DisplayRegistrationData {
         euRegistrationDetails = Seq.empty,
         contactName = "Rocky Balboa",
         businessTelephoneNumber = "028 123 4567",
-        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        businessEmailId = "iossint@iossint.hmrc.gov.uk",
         unusableStatus = false,
         nonCompliantReturns = None,
         nonCompliantPayments = None
@@ -163,7 +163,7 @@ object DisplayRegistrationData {
         euRegistrationDetails = Seq.empty,
         contactName = "Rocky Balboa",
         businessTelephoneNumber = "028 123 4567",
-        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        businessEmailId = "iossint@iossint.hmrc.gov.uk",
         unusableStatus = false,
         nonCompliantReturns = None,
         nonCompliantPayments = None
@@ -197,7 +197,7 @@ object DisplayRegistrationData {
         euRegistrationDetails = Seq.empty,
         contactName = "Rocky Balboa",
         businessTelephoneNumber = "028 123 4567",
-        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        businessEmailId = "iossint@iossint.hmrc.gov.uk",
         unusableStatus = false,
         nonCompliantReturns = None,
         nonCompliantPayments = None
@@ -303,7 +303,7 @@ object DisplayRegistrationData {
         euRegistrationDetails = Seq.empty,
         contactName = "Rocky Balboa",
         businessTelephoneNumber = "028 123 4567",
-        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        businessEmailId = "iossint@iossint.hmrc.gov.uk",
         unusableStatus = false,
         nonCompliantReturns = None,
         nonCompliantPayments = None
