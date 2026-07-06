@@ -251,7 +251,8 @@ class RegistrationController @Inject()(
                 LocalDate.of(2025, 1, 1),
                 Seq(
                   EtmpClientDetails("Excluded Intermediary Client 1", "IM9001236666", true)),
-                  "AF"
+                  "AF",
+                  None
               )))
 
             case "IN9001237777" =>
@@ -260,7 +261,8 @@ class RegistrationController @Inject()(
                 clock, 
                 LocalDate.of(2025, 1, 1),
                 Seq.empty,
-                "AF"
+                "AF",
+                None
               )))
 
             case "IN9001238888" =>
@@ -269,7 +271,8 @@ class RegistrationController @Inject()(
                 clock,
                 LocalDate.of(2025, 1, 1),
                 Seq.empty,
-                "GB"
+                "GB",
+                Some("AA1 1AA")
               )))
 
             case "IN9001234567" =>

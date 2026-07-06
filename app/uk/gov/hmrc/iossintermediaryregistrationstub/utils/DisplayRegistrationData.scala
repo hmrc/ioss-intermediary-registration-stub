@@ -326,7 +326,7 @@ object DisplayRegistrationData {
     )
   }
 
-  def excludedOtherAddressNonNi(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails], country: String): EtmpDisplayRegistration = {
+  def excludedOtherAddressNonNi(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails], country: String, postcode: Option[String]): EtmpDisplayRegistration = {
     EtmpDisplayRegistration(
       customerIdentification = EtmpCustomerIdentification(
         idType = VRN,
@@ -347,7 +347,7 @@ object DisplayRegistrationData {
           addressLine2 = Some("Non NI Address Line 2"),
           townOrCity = "City",
           regionOrState = None,
-          postcode = None
+          postcode = postcode
         )
       ),
       schemeDetails = EtmpDisplaySchemeDetails(
