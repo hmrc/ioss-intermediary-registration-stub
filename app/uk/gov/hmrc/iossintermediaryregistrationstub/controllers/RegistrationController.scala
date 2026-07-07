@@ -237,12 +237,43 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9001234444" =>
-              // Non-Ni Other Address scenario
+              // NI Other Address scenario
               Ok(Json.toJson(minimalSuccessfulDisplayRegistrationResponseOtherAddress(clock, LocalDate.of(2025, 1, 1))))
 
             case "IN9001235555" =>
-              // Non-Ni Other Address scenario - excluded
+              // NI Other Address scenario - excluded
               Ok(Json.toJson(excludedManualNiAddress(clock, LocalDate.of(2025, 1, 1))))
+
+            case "IN9001236666" =>
+              // Non-Ni Other Address scenario - excluded
+              Ok(Json.toJson(excludedOtherAddressNonNi(
+                clock, 
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Excluded Intermediary Client 1", "IM9001236666", true)),
+                  "AF",
+                  None
+              )))
+
+            case "IN9001237777" =>
+              // Non-Ni Other Address scenario - excluded - no clients
+              Ok(Json.toJson(excludedOtherAddressNonNi(
+                clock, 
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                "AF",
+                None
+              )))
+
+            case "IN9001238888" =>
+              // Non-Ni Other Address scenario - excluded - no clients - Specifically United Kingdom
+              Ok(Json.toJson(excludedOtherAddressNonNi(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq.empty,
+                "GB",
+                Some("AA1 1AA")
+              )))
 
             case "IN9001234567" =>
               //              Multiple active and previous clients

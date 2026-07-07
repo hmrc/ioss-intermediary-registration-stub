@@ -18,7 +18,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.utils
 
 import uk.gov.hmrc.iossintermediaryregistrationstub.format.Format.dateFormatter
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
-import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.{NoLongerSupplies, TransferringMSID}
+import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.TransferringMSID
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpIdType.VRN
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.display.{EtmpDisplayEuRegistrationDetails, EtmpDisplayRegistration, EtmpDisplaySchemeDetails}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.{Bic, Iban}
@@ -121,7 +121,7 @@ object DisplayRegistrationData {
           addressLine2 = Some("Other Address Line 2"),
           townOrCity = "Other Town or City",
           regionOrState = Some("Other Region or State"),
-          postcode = "BT111AH"
+          postcode = Some("BT111AH")
         )
       ),
       schemeDetails = EtmpDisplaySchemeDetails(
@@ -295,7 +295,7 @@ object DisplayRegistrationData {
           addressLine2 = Some("Other Address Line 2"),
           townOrCity = "Other Town or City",
           regionOrState = Some("Other Region or State"),
-          postcode = "BT111AH"
+          postcode = Some("BT111AH")
         )
       ),
       schemeDetails = EtmpDisplaySchemeDetails(
@@ -314,6 +314,58 @@ object DisplayRegistrationData {
             exclusionReason = TransferringMSID,
             effectiveDate = LocalDate.of(2025, 1, 1),
             decisionDate = LocalDate.of(2025, 1, 1),
+            quarantine = false
+          )
+        ),
+      bankDetails = EtmpBankDetails(
+        accountName = "Chartoff Winkler and Co.",
+        bic = Some(Bic("BARCGB22456").get),
+        iban = Iban("GB33BUKB202015555555555").toOption.get
+      ),
+      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+    )
+  }
+
+  def excludedOtherAddressNonNi(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails], country: String, postcode: Option[String]): EtmpDisplayRegistration = {
+    EtmpDisplayRegistration(
+      customerIdentification = EtmpCustomerIdentification(
+        idType = VRN,
+        idValue = "700000003"
+      ),
+      tradingNames = Seq.empty,
+      clientDetails = clientList,
+      intermediaryDetails = Some(
+        EtmpIntermediaryDetails(
+          otherIossIntermediaryRegistrations = Seq.empty
+        )
+      ),
+      otherAddress = Some(
+        EtmpOtherAddress(
+          issuedBy = country,
+          tradingName = None,
+          addressLine1 = "Non NI Address Line 1",
+          addressLine2 = Some("Non NI Address Line 2"),
+          townOrCity = "City",
+          regionOrState = None,
+          postcode = postcode
+        )
+      ),
+      schemeDetails = EtmpDisplaySchemeDetails(
+        commencementDate = commencementDate.format(dateFormatter),
+        euRegistrationDetails = Seq.empty,
+        contactName = "Rocky Balboa",
+        businessTelephoneNumber = "028 123 4567",
+        businessEmailId = "rocky.balboa@chartoffwinkler.co.uk",
+        unusableStatus = false,
+        nonCompliantReturns = None,
+        nonCompliantPayments = None
+      ),
+      exclusions =
+        Seq(
+          EtmpExclusion(
+            exclusionReason = TransferringMSID,
+            effectiveDate = LocalDate.of(2025, 3, 1),
+            decisionDate = LocalDate.of(2025, 3, 1),
             quarantine = false
           )
         ),
