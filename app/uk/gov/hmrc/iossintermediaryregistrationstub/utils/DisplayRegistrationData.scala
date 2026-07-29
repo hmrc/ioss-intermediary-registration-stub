@@ -144,7 +144,7 @@ object DisplayRegistrationData {
     )
   }
 
-  def minimalDisplayWithClientsRegistrationResponse(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails]): EtmpDisplayRegistration = {
+  def minimalDisplayWithClientsRegistrationResponse(clock: Clock, commencementDate: LocalDate, clientList: Seq[EtmpClientDetails], changeDate: EtmpAdminUse = EtmpAdminUse(Some(LocalDateTime.now()))): EtmpDisplayRegistration = {
     EtmpDisplayRegistration(
       customerIdentification = EtmpCustomerIdentification(
         idType = VRN,
@@ -174,7 +174,7 @@ object DisplayRegistrationData {
         bic = Some(Bic("BARCGB22456").get),
         iban = Iban("GB33BUKB202015555555555").toOption.get
       ),
-      adminUse = EtmpAdminUse(Some(LocalDateTime.now(clock)))
+      adminUse = changeDate
     )
   }
 
