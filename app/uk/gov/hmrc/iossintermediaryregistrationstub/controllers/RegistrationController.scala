@@ -812,7 +812,7 @@ class RegistrationController @Inject()(
                   EtmpClientDetails("Change date over two years", "IM9002221221", false),
                   EtmpClientDetails("Change date under two years", "IM9002221222", false)
                 ),
-                EtmpAdminUse(Some(LocalDateTime.now().minusYears(2)))
+                EtmpAdminUse(Some(LocalDateTime.now().minusYears(2).minusDays(1)))
               )))
 
             case "IN9002221223" =>
@@ -823,8 +823,7 @@ class RegistrationController @Inject()(
                 Seq(
                   EtmpClientDetails("Change date over two years", "IM9002221223", false),
                   EtmpClientDetails("Change date under two years", "IM9002221224", false)
-                ),
-                EtmpAdminUse(Some(LocalDateTime.now().minusYears(2)))
+                )
               )))
 
             case _ =>
