@@ -803,6 +803,29 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9002221222" =>
+              // Intermediary change date over two years - 1 client with change date over 2 years, 1 under 2 years
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Change date over two years", "IM9002221221", false),
+                  EtmpClientDetails("Change date under two years", "IM9002221222", false)
+                ),
+                EtmpAdminUse(Some(LocalDateTime.now().minusYears(2).minusDays(1)))
+              )))
+
+            case "IN9002221223" =>
+              // Intermediary change date under two years - 1 client with change date over 2 years, 1 under 2 years
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2025, 1, 1),
+                Seq(
+                  EtmpClientDetails("Change date over two years", "IM9002221223", false),
+                  EtmpClientDetails("Change date under two years", "IM9002221224", false)
+                )
+              )))
+
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1), false)))
           }
