@@ -826,6 +826,16 @@ class RegistrationController @Inject()(
                 )
               )))
 
+            case "IN9002111002" =>
+              //VAT Group client
+              Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
+                clock,
+                LocalDate.of(2026, 1, 1),
+                Seq(
+                  EtmpClientDetails("VAT Group Yes", "IM9002111002", false),
+                )
+              )))
+
             case _ =>
               Ok(Json.toJson(fullSuccessfulDisplayRegistrationResponse(clock, LocalDate.of(2025, 1, 1), false)))
           }
