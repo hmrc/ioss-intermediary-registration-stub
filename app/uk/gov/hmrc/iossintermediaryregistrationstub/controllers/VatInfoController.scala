@@ -125,7 +125,7 @@ class VatInfoController @Inject()(cc: ControllerComponents, clock: Clock) extend
       case "700000001" => Ok(Json.toJson(successfulSparseResponse))
       case "700000002" => Ok(Json.toJson(successfulFullIndividualResponse))
       case "700000003" | "700000005" => Ok(Json.toJson(successfulFullResponseNonNi))
-      case "700000004" => Ok(Json.toJson(expiredVrnResponse))
+      case "700000004" | "700000008" => Ok(Json.toJson(expiredVrnResponse))
       case "700000006" => Ok(Json.toJson(successfulDisplayResponse))
       case "700000007" => Ok(Json.toJson(successfulNonNiDisplayResponse))
       case _ => Ok(Json.toJson(successfulFullResponse))
