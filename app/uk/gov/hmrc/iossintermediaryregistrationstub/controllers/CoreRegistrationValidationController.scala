@@ -89,10 +89,10 @@ class CoreRegistrationValidationController @Inject()(
             val searchIdIssuedBy = jsonBody.map(body => (body \ "searchIdIssuedBy").as[String]).get
 
             val findMatch = (searchIdIssuedBy, searchId) match {
-              case (_, MatchInfractionIds.activeSearchId) =>
+              case (_, MatchInfractionIds.activeSearchId) | (_, "333333111") =>
                 logger.info("Intermediary match found. Active in another MS. GG VRN kickout")
                 Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = None, traderId = "IN2467777777"))
-              case (_, MatchInfractionIds.`quarantinedSearchId`) =>
+              case (_, MatchInfractionIds.`quarantinedSearchId`) | (_, "333333222") =>
                 logger.info("Intermediary match found. Quarantined in another MS. GG VRN kickout")
                 Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = Some(4), traderId = "IN2467777777"))
               case (_, MatchInfractionIds.`quarantineExpiredSearchId`) =>
@@ -110,7 +110,7 @@ class CoreRegistrationValidationController @Inject()(
               case (_, MatchInfractionIds.`quarantinedSearchIdIoss`) =>
                 logger.info("Ioss match found. Quarantined in another MS. GG VRN does not kickout")
                 Seq(genericMatch.copy(matchType = MatchType.OtherMSNETPQuarantinedNETP, exclusionStatusCode = Some(4), traderId = "IM3333333334"))
-              case ("SI", "IN7057777123") =>
+              case ("SI", "IN7057777123") | ("SI", "IN7057777133") =>
                 logger.info("Intermediary match found. Active in another MS. Previous reg intermediary")
                 Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = None, traderId = "IN7057777777"))
               case ("SI", "IN7057777111") =>
@@ -122,7 +122,7 @@ class CoreRegistrationValidationController @Inject()(
               case ("SI", "IN7057777125") =>
                 logger.info("Ioss match found. Active in another MS. Previous reg IOSS")
                 Seq(genericMatch.copy(matchType = MatchType.TraderIdActiveNETP, exclusionStatusCode = None, traderId = "IM3333333333"))
-              case ("LV", "IN4287777123") =>
+              case ("LV", "IN4287777123") | ("LV", "IN4287777133") =>
                 logger.info("Intermediary match found. Quarantined in another MS. Previous reg intermediary.")
                 Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = Some(4), traderId = "IN4287777123"))
               case ("LV", "IN4287777111") =>
@@ -134,7 +134,7 @@ class CoreRegistrationValidationController @Inject()(
               case ("LV", "IN4287777125") =>
                 logger.info("Ioss match found. Quarantined in another MS. Previous reg IOSS")
                 Seq(genericMatch.copy(matchType = MatchType.TraderIdQuarantinedNETP, exclusionStatusCode = Some(4), traderId = "IM3333333333"))
-              case ("PT", "111222333") =>
+              case ("PT", "111222333") | ("PT", "211222333") =>
                 logger.info("Intermediary match found. Active in another MS. EU details (EU VAT number)")
                 Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = None, traderId = "IN4287777123"))
               case ("PT", "111222334") =>
@@ -164,7 +164,7 @@ class CoreRegistrationValidationController @Inject()(
               case ("LT", "999888779") =>
                 logger.info("Ioss match found. Quarantined in another MS. EU details (EU VAT number)")
                 Seq(genericMatch.copy(matchType = MatchType.FixedEstablishmentQuarantinedNETP, exclusionStatusCode = Some(4), traderId = "IM3333333333"))
-              case ("LT", "ABC123123") =>
+              case ("LT", "ABC123123") | ("LT", "ABC321321") =>
                 logger.info("Intermediary match found. Quarantined in another MS. EU details (Tax ID number)")
                 Seq(genericMatch.copy(matchType = MatchType.PreviousRegistrationFound, exclusionStatusCode = Some(4), traderId = "IN4287777123"))
               case ("LT", "ABC123111") =>
