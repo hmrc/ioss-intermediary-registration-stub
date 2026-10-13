@@ -804,7 +804,7 @@ class RegistrationController @Inject()(
               )))
 
             case "IN9002221222" =>
-              // Intermediary change date over six months - 1 client with change date over 2 years, 1 over 6 months
+              // Intermediary change date over six months - 1 client with change date over 6 months, 1 client under 6 months
               Ok(Json.toJson(minimalDisplayWithClientsRegistrationResponse(
                 clock,
                 LocalDate.of(2025, 1, 1),
