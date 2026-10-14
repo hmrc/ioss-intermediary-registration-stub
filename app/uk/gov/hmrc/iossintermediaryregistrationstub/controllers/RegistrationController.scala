@@ -812,7 +812,7 @@ class RegistrationController @Inject()(
                   EtmpClientDetails("Change date over six months", "IM9002221221", false),
                   EtmpClientDetails("Change date under six months", "IM9002221222", false)
                 ),
-                EtmpAdminUse(Some(LocalDateTime.now().minusMonths(6)))
+                EtmpAdminUse(Some(LocalDateTime.now().minusMonths(6).minusDays(1)))
               )))
 
             case "IN9002221223" =>
