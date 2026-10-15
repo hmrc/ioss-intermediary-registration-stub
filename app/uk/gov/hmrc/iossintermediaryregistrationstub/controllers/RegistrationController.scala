@@ -19,6 +19,7 @@ package uk.gov.hmrc.iossintermediaryregistrationstub.controllers
 import play.api.Logging
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.iossintermediaryregistrationstub.config.AppConfig
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.core.{EisDisplayErrorDetail, EisDisplayErrorResponse}
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.*
 import uk.gov.hmrc.iossintermediaryregistrationstub.models.etmp.EtmpExclusionReason.*
@@ -39,6 +40,7 @@ class RegistrationController @Inject()(
                                         cc: ControllerComponents,
                                         jsonSchemaHelper: JsonSchemaHelper,
                                         randomService: RandomService,
+                                        config: AppConfig,
                                         clock: Clock
                                       ) extends BackendController(cc) with Logging {
 
@@ -50,7 +52,7 @@ class RegistrationController @Inject()(
       logger.info(s"Payload received on create registration $maybeJsonBody")
 
       jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
-        jsonSchemaHelper.applySchemaValidation("/resources/schemas/etmp-registration-schema.json", maybeJsonBody) match {
+        jsonSchemaHelper.applySchemaValidation(s"/resources/schemas/${config.schemaReleaseString}etmp-registration-schema.json", maybeJsonBody) match {
           case SuccessSchema =>
 
             maybeJsonBody.map { body =>
@@ -862,7 +864,7 @@ class RegistrationController @Inject()(
       logger.info(s"Amend payload: ${request.body}")
 
       jsonSchemaHelper.applySchemaHeaderValidation(request.headers) {
-        jsonSchemaHelper.applySchemaValidation("/resources/schemas/amend-registration-schema.json", maybeJsonBody) match {
+        jsonSchemaHelper.applySchemaValidation(s"/resources/schemas/${config.schemaReleaseString}amend-registration-schema.json", maybeJsonBody) match {
           case SuccessSchema =>
 
             maybeJsonBody.map { body =>
